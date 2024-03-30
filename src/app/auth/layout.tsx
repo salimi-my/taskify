@@ -17,8 +17,8 @@ export default function AuthLayout({
           className='h-full w-full object-cover brightness-90 dark:brightness-[0.2] dark:grayscale'
         />
       </div>
-      <div className='flex items-center justify-center py-12 col-span-2'>
-        <div className='mx-auto grid w-[350px] gap-6'>{children}</div>
+      <div className='flex items-center justify-center py-12 col-span-2 min-h-screen'>
+        <div className='mx-auto grid w-[416px] gap-6 px-4'>{children}</div>
       </div>
     </div>
   );

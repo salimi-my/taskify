@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@/components/ui/input';
+import Social from '@/components/auth/social';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -57,6 +58,7 @@ export function SignUpForm() {
           to continue to using Taskify
         </p>
       </div>
+      <Social />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -135,10 +137,10 @@ export function SignUpForm() {
             {loading && (
               <>
                 <Loader2 className='animate-spin mr-2' size={18} />
-                Signing in...
+                Creating an account...
               </>
             )}
-            {!loading && <>Sign up</>}
+            {!loading && <>Create an account</>}
           </Button>
           <p className='text-sm font-light text-gray-500 dark:text-gray-400 mt-1'>
             Already have an account?

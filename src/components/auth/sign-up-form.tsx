@@ -72,6 +72,7 @@ export function SignUpForm() {
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={loading}
                     type='text'
                     placeholder='John Doe'
                     autoComplete='name'
@@ -90,6 +91,7 @@ export function SignUpForm() {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={loading}
                     type='email'
                     placeholder='email@example.com'
                     autoComplete='email'
@@ -107,7 +109,12 @@ export function SignUpForm() {
               <FormItem className='space-y-1'>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type='password' placeholder='••••••••' {...field} />
+                  <Input
+                    disabled={loading}
+                    type='password'
+                    placeholder='••••••••'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -120,7 +127,12 @@ export function SignUpForm() {
               <FormItem className='space-y-1'>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input type='password' placeholder='••••••••' {...field} />
+                  <Input
+                    disabled={loading}
+                    type='password'
+                    placeholder='••••••••'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

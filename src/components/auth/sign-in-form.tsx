@@ -72,6 +72,7 @@ export function SignInForm() {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={loading}
                     placeholder='email@example.com'
                     autoComplete='email'
                     {...field}
@@ -88,7 +89,12 @@ export function SignInForm() {
               <FormItem className='space-y-1'>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type='password' placeholder='••••••••' {...field} />
+                  <Input
+                    disabled={loading}
+                    type='password'
+                    placeholder='••••••••'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

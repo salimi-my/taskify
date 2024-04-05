@@ -36,6 +36,10 @@ export function SignInForm() {
     error = 'Invalid email or password.';
   }
 
+  if (error === 'OAuthAccountNotLinked') {
+    error = 'Invalid OAuth Account.';
+  }
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

@@ -11,6 +11,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Social from '@/components/auth/social';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { FormError } from '@/components/form-error';
+import { FormSuccess } from '@/components/form-success';
 import {
   Form,
   FormControl,
@@ -29,16 +31,15 @@ export function SignInForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
 
-  let error = searchParams.get('error');
-
-  if (error === 'CredentialsSignin') {
-    error = 'Invalid email or password.';
-  }
-
-  if (error === 'OAuthAccountNotLinked') {
-    error = 'Invalid OAuth Account.';
-  }
+  const urlError =
+    searchParams.get('error') === 'CredentialsSignin'
+      ? 'Invalid email or password.'
+      : searchParams.get('error') === 'OAuthAccountNotLinked'
+      ? 'Invalid OAuth Account.'
+      : '';
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,6 +59,8 @@ export function SignInForm() {
           to continue to your account
         </p>
       </div>
+      <FormError className='mb-2' message={error || urlError} />
+      <FormSuccess className='mb-2' message={success} />
       <Social />
       <Form {...form}>
         <form

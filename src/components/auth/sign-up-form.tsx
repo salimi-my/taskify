@@ -10,6 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import Social from '@/components/auth/social';
 import { Button } from '@/components/ui/button';
+import { FormError } from '@/components/form-error';
+import { FormSuccess } from '@/components/form-success';
 import {
   Form,
   FormControl,
@@ -37,6 +39,8 @@ const formSchema = z
 
 export function SignUpForm() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | undefined>('');
+  const [success, setSuccess] = useState<string | undefined>('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,6 +62,8 @@ export function SignUpForm() {
           to continue to using Taskify
         </p>
       </div>
+      <FormError className='mb-2' message={error} />
+      <FormSuccess className='mb-2' message={success} />
       <Social />
       <Form {...form}>
         <form

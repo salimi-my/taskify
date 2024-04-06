@@ -16,7 +16,7 @@ export function FormError({ className, message }: FormErrorProps) {
         <AlertTriangle className='h-4 w-4' />
         Error
       </AlertTitle>
-      <AlertDescription>Invalid email or password.</AlertDescription>
+      <AlertDescription>{message}</AlertDescription>
     </Alert>
   );
 }

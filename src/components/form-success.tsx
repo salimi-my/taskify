@@ -16,7 +16,7 @@ export function FormSuccess({ className, message }: FormSuccessProps) {
         <CircleCheck className='h-4 w-4' />
         Success
       </AlertTitle>
-      <AlertDescription>Invalid email or password.</AlertDescription>
+      <AlertDescription>{message}</AlertDescription>
     </Alert>
   );
 }

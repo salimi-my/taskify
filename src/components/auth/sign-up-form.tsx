@@ -4,6 +4,7 @@ import * as z from 'zod';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -52,7 +53,52 @@ export function SignUpForm() {
     }
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {};
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setError('');
+      setSuccess('');
+      setLoading(true);
+
+      const response = await axios.post('/api/register', values);
+
+      if (response.data.success) {
+        form.reset();
+        setSuccess('Sign up successful. Check your email to verify.');
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data.error) {
+        if (error.response.data.error === 'Name is required.') {
+          form.setError('name', {
+            type: 'manual',
+            message: error.response.data.error
+          });
+        } else if (error.response.data.error === 'Email is required.') {
+          form.setError('email', {
+            type: 'manual',
+            message: error.response.data.error
+          });
+        } else if (error.response.data.error === 'Password is required.') {
+          form.setError('password', {
+            type: 'manual',
+            message: error.response.data.error
+          });
+        } else if (error.response.data.error === 'Passwords does not match.') {
+          form.setError('confirm', {
+            type: 'manual',
+            message: error.response.data.error
+          });
+        } else if (error.response.data.error === 'Cannot register.') {
+          setError('Cannot register. There can only be one user.');
+        } else {
+          setError(error.response.data.error);
+        }
+      } else {
+        setError('Oops! Something went wrong. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>

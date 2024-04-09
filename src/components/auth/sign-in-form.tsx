@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import axios, { AxiosError } from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -24,7 +25,8 @@ import {
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter valid email address.' }),
-  password: z.string().min(1, { message: 'Please enter password.' })
+  password: z.string().min(1, { message: 'Please enter password.' }),
+  code: z.optional(z.string())
 });
 
 export function SignInForm() {
@@ -49,7 +51,31 @@ export function SignInForm() {
     }
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {};
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      setError('');
+      setSuccess('');
+      setLoading(true);
+
+      const response = await axios.post('/api/login', {
+        callbackUrl,
+        ...values
+      });
+
+      if (response.data.success) {
+        form.reset();
+        setSuccess(response.data.message);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('Oops! Something went wrong. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>

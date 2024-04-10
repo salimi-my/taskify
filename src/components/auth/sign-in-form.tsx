@@ -9,9 +9,11 @@ import axios, { AxiosError } from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { signIn } from '@/auth';
 import Social from '@/components/auth/social';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { DEFAULT_SIGNIN_REDIRECT } from '@/routes';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import {
@@ -57,14 +59,23 @@ export function SignInForm() {
       setSuccess('');
       setLoading(true);
 
-      const response = await axios.post('/api/login', {
-        callbackUrl,
-        ...values
-      });
+      const response = await axios.post('/api/login', values);
 
       if (response.data.success) {
-        form.reset();
-        setSuccess(response.data.message);
+        if (response.data.message === 'Login successful.') {
+          try {
+            setLoading(true);
+
+            await signIn('credentials', {
+              ...values,
+              callbackUrl: callbackUrl || DEFAULT_SIGNIN_REDIRECT
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          setSuccess(response.data.message);
+        }
       }
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data.error) {

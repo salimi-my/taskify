@@ -2,18 +2,17 @@
 
 import * as z from 'zod';
 import Link from 'next/link';
-import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import axios, { AxiosError } from 'axios';
+import { useState, useTransition } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { signIn } from '@/auth';
+import { login } from '@/actions/login';
+import { LoginSchema } from '@/schemas';
 import Social from '@/components/auth/social';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { DEFAULT_SIGNIN_REDIRECT } from '@/routes';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import {
@@ -25,16 +24,11 @@ import {
   FormMessage
 } from '@/components/ui/form';
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter valid email address.' }),
-  password: z.string().min(1, { message: 'Please enter password.' }),
-  code: z.optional(z.string())
-});
-
 export function SignInForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
-  const [loading, setLoading] = useState(false);
+
+  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -43,49 +37,32 @@ export function SignInForm() {
       ? 'Invalid email or password.'
       : searchParams.get('error') === 'OAuthAccountNotLinked'
       ? 'Invalid OAuth Account.'
+      : searchParams.get('error') !== '' && searchParams.get('error') !== null
+      ? 'Uh oh! Something went wrong.'
       : '';
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: '',
       password: ''
     }
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setError('');
-      setSuccess('');
-      setLoading(true);
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+    setError('');
+    setSuccess('');
 
-      const response = await axios.post('/api/login', values);
-
-      if (response.data.success) {
-        if (response.data.message === 'Login successful.') {
-          try {
-            setLoading(true);
-
-            await signIn('credentials', {
-              ...values,
-              callbackUrl: callbackUrl || DEFAULT_SIGNIN_REDIRECT
-            });
-          } catch (error) {
-            console.log(error);
+    startTransition(() => {
+      login(values, callbackUrl)
+        .then((data) => {
+          if (data?.error) {
+            form.reset();
+            setError(data.error);
           }
-        } else {
-          setSuccess(response.data.message);
-        }
-      }
-    } catch (error) {
-      if (error instanceof AxiosError && error.response?.data.error) {
-        setError(error.response.data.error);
-      } else {
-        setError('Oops! Something went wrong. Please try again.');
-      }
-    } finally {
-      setLoading(false);
-    }
+        })
+        .catch(() => setError('Uh oh! Something went wrong.'));
+    });
   };
 
   return (
@@ -112,7 +89,7 @@ export function SignInForm() {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={loading}
+                    disabled={isPending}
                     placeholder='email@example.com'
                     autoComplete='email'
                     {...field}
@@ -130,7 +107,7 @@ export function SignInForm() {
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={loading}
+                    disabled={isPending}
                     type='password'
                     placeholder='••••••••'
                     {...field}
@@ -142,19 +119,19 @@ export function SignInForm() {
           />
 
           <Button
-            disabled={loading}
+            disabled={isPending}
             type='submit'
             variant='default'
             size='lg'
             className='mt-4'
           >
-            {loading && (
+            {isPending && (
               <>
                 <Loader2 className='animate-spin mr-2' size={18} />
                 Signing in...
               </>
             )}
-            {!loading && <>Sign in</>}
+            {!isPending && <>Sign in</>}
           </Button>
           <p className='text-sm font-light text-gray-500 dark:text-gray-400 mt-1'>
             Don&apos;t have an account yet?

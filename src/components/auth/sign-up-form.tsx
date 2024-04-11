@@ -2,12 +2,13 @@
 
 import * as z from 'zod';
 import Link from 'next/link';
-import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
-import axios, { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
+import { useState, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { RegisterSchema } from '@/schemas';
+import { register } from '@/actions/register';
 import { Input } from '@/components/ui/input';
 import Social from '@/components/auth/social';
 import { Button } from '@/components/ui/button';
@@ -22,29 +23,13 @@ import {
   FormMessage
 } from '@/components/ui/form';
 
-const formSchema = z
-  .object({
-    name: z.string().min(1, { message: 'Please enter name.' }),
-    email: z.string().email({ message: 'Please enter valid email address.' }),
-    password: z
-      .string()
-      .min(8, { message: 'Please enter at least 8 characters.' }),
-    confirm: z
-      .string()
-      .min(8, { message: 'Please enter at least 8 characters.' })
-  })
-  .refine((data) => data.password === data.confirm, {
-    message: 'Passwords does not match.',
-    path: ['confirm']
-  });
-
 export function SignUpForm() {
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
       name: '',
       email: '',
@@ -53,51 +38,26 @@ export function SignUpForm() {
     }
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      setError('');
-      setSuccess('');
-      setLoading(true);
+  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
+    setError('');
+    setSuccess('');
 
-      const response = await axios.post('/api/register', values);
+    startTransition(() => {
+      register(values)
+        .then((data) => {
+          if (data.error) {
+            setError(data.error);
+          }
 
-      if (response.data.success) {
-        form.reset();
-        setSuccess('Sign up successful. Check your email to verify.');
-      }
-    } catch (error) {
-      if (error instanceof AxiosError && error.response?.data.error) {
-        if (error.response.data.error === 'Name is required.') {
-          form.setError('name', {
-            type: 'manual',
-            message: error.response.data.error
-          });
-        } else if (error.response.data.error === 'Email is required.') {
-          form.setError('email', {
-            type: 'manual',
-            message: error.response.data.error
-          });
-        } else if (error.response.data.error === 'Password is required.') {
-          form.setError('password', {
-            type: 'manual',
-            message: error.response.data.error
-          });
-        } else if (error.response.data.error === 'Passwords does not match.') {
-          form.setError('confirm', {
-            type: 'manual',
-            message: error.response.data.error
-          });
-        } else if (error.response.data.error === 'Cannot register.') {
-          setError('Cannot register. There can only be one user.');
-        } else {
-          setError(error.response.data.error);
-        }
-      } else {
-        setError('Oops! Something went wrong. Please try again.');
-      }
-    } finally {
-      setLoading(false);
-    }
+          if (data.success) {
+            form.reset();
+            setSuccess(data.success);
+          }
+        })
+        .catch(() => {
+          setError('Uh oh! Something went wrong.');
+        });
+    });
   };
 
   return (
@@ -124,7 +84,7 @@ export function SignUpForm() {
                 <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={loading}
+                    disabled={isPending}
                     type='text'
                     placeholder='John Doe'
                     autoComplete='name'
@@ -143,7 +103,7 @@ export function SignUpForm() {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={loading}
+                    disabled={isPending}
                     type='email'
                     placeholder='email@example.com'
                     autoComplete='email'
@@ -162,7 +122,7 @@ export function SignUpForm() {
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={loading}
+                    disabled={isPending}
                     type='password'
                     placeholder='••••••••'
                     {...field}
@@ -180,7 +140,7 @@ export function SignUpForm() {
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={loading}
+                    disabled={isPending}
                     type='password'
                     placeholder='••••••••'
                     {...field}
@@ -192,19 +152,19 @@ export function SignUpForm() {
           />
 
           <Button
-            disabled={loading}
+            disabled={isPending}
             type='submit'
             variant='default'
             size='lg'
             className='mt-4'
           >
-            {loading && (
+            {isPending && (
               <>
                 <Loader2 className='animate-spin mr-2' size={18} />
                 Creating an account...
               </>
             )}
-            {!loading && <>Create an account</>}
+            {!isPending && <>Create an account</>}
           </Button>
           <p className='text-sm font-light text-gray-500 dark:text-gray-400 mt-1'>
             Already have an account?

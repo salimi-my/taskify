@@ -15,14 +15,19 @@ export const publicRoutes: string[] = [
  * These routes will redirect signed in users to /admin
  * @type {string[]}
  */
-export const authRoutes: string[] = ['/auth/sign-in', '/auth/sign-up'];
+export const authRoutes: string[] = [
+  '/auth/sign-in',
+  '/auth/sign-up',
+  '/auth/forgot-password',
+  '/auth/reset-password'
+];
 
 /**
  * The prefix for API authentication routes
  * Routes that start with this prefix are used for API authentication purposes
  * @type {string}
  */
-export const apiAuthPrefix = '/api/auth';
+export const apiAuthPrefix: string = '/api/auth';
 
 /**
  * The default redirect path after signing in

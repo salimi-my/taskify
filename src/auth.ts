@@ -13,6 +13,27 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     error: '/auth/sign-in'
   },
   callbacks: {
+    async signIn({ user, account }) {
+      // Skip email verification check for OAuth
+      if (account?.provider !== 'credentials') {
+        return true;
+      }
+
+      // Check if user exists
+      if (!user || !user.id) {
+        return false;
+      }
+
+      // Get existing user
+      const existingUser = await getUserById(user.id);
+
+      // Prevent unverified email sign in
+      if (!existingUser || !existingUser.emailVerified) {
+        return false;
+      }
+
+      return true;
+    },
     async session({ token, session, trigger, newSession }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;

@@ -12,6 +12,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: '/auth/sign-in',
     error: '/auth/sign-in'
   },
+  events: {
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: {
+          id: user.id
+        },
+        data: {
+          emailVerified: new Date()
+        }
+      });
+    }
+  },
   callbacks: {
     async signIn({ user, account }) {
       // Skip email verification check for OAuth

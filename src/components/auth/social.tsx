@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { signIn } from 'next-auth/react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import { DEFAULT_SIGNIN_REDIRECT } from '@/routes';
 
 export default function Social() {
   const searchParams = useSearchParams();
@@ -15,7 +17,11 @@ export default function Social() {
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingGitHub, setLoadingGitHub] = useState(false);
 
-  const onClick = (provider: 'google' | 'github') => {};
+  const onClick = (provider: 'google' | 'github') => {
+    signIn(provider, {
+      callbackUrl: callbackUrl || DEFAULT_SIGNIN_REDIRECT
+    });
+  };
 
   return (
     <div className='w-full flex flex-col'>

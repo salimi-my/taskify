@@ -60,6 +60,10 @@ export function SignInForm() {
             form.reset();
             setError(data.error);
           }
+          if (data?.success) {
+            form.reset();
+            setSuccess(data.success);
+          }
         })
         .catch(() => setError('Uh oh! Something went wrong.'));
     });

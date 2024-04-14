@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import AuthImage from '@public/auth-image.png';
-import LogoWhite from '@public/taskify-logo-white.png';
+import LogoLight from '@public/taskify-logo-light.png';
 
 export default function AuthLayout({
   children
@@ -17,7 +17,7 @@ export default function AuthLayout({
           className='flex justify-start items-center hover:opacity-85 transition-opacity duration-300'
         >
           <Image
-            src={LogoWhite}
+            src={LogoLight}
             placeholder='blur'
             priority
             alt='Taskify Logo'

@@ -12,7 +12,10 @@ export default function AuthLayout({
   return (
     <div className='w-full lg:grid min-h-screen lg:grid-cols-3'>
       <div className='relative hidden flex-col justify-between p-10 pb-0 text-white lg:flex bg-primary dark:bg-gray-200 h-full'>
-        <Link href='/' className='flex justify-start items-center'>
+        <Link
+          href='/'
+          className='flex justify-start items-center hover:opacity-85 transition-opacity duration-300'
+        >
           <Image
             src={LogoWhite}
             placeholder='blur'
@@ -25,7 +28,7 @@ export default function AuthLayout({
           </h1>
         </Link>
         <div className='w-full max-w-[512px]'>
-          <h2 className='text-5xl font-extrabold'>
+          <h2 className='text-5xl font-extrabold [text-shadow:_7px_0_hsl(var(--foreground))]'>
             Organize, Prioritize, Conquer Your Tasks!
           </h2>
           <p className='text-muted pt-5 font-light'>

@@ -7,6 +7,7 @@ import { signIn } from '@/auth';
 import { LoginSchema } from '@/schemas';
 import { getUserByEmail } from '@/data/user';
 import { DEFAULT_SIGNIN_REDIRECT } from '@/routes';
+import { sendVerificationEmail } from '@/lib/mail';
 import { generateVerificationToken } from '@/lib/tokens';
 
 export async function login(
@@ -25,7 +26,7 @@ export async function login(
 
   const existingUser = await getUserByEmail(email);
 
-  if (!existingUser || !existingUser.id) {
+  if (!existingUser || !existingUser.name || !existingUser.email) {
     return {
       error: 'User does not exist.'
     };
@@ -33,6 +34,12 @@ export async function login(
 
   if (!existingUser.emailVerified) {
     const verificationToken = await generateVerificationToken(existingUser.id);
+
+    await sendVerificationEmail(
+      existingUser.name,
+      existingUser.email,
+      verificationToken.token
+    );
 
     return { success: 'Confirmation email sent. Check your email to verify.' };
   }

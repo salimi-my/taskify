@@ -10,7 +10,7 @@ import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_SIGNIN_REDIRECT } from '@/routes';
 
-export default function Social() {
+export function Social() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
 

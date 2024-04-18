@@ -10,8 +10,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { login } from '@/actions/login';
 import { LoginSchema } from '@/schemas';
-import Social from '@/components/auth/social';
 import { Input } from '@/components/ui/input';
+import { Social } from '@/components/auth/social';
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';

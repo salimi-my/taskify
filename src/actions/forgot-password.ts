@@ -32,5 +32,5 @@ export async function forgotPassword(
     passwordResetToken.token
   );
 
-  return { success: 'Reset link sent to your email.' };
+  return { success: 'Reset link sent to your email. Check your inbox.' };
 }

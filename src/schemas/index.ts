@@ -27,3 +27,17 @@ export const ForgotPasswordSchema = z.object({
     message: 'Valid email is required.'
   })
 });
+
+export const ResetPasswordSchema = z
+  .object({
+    password: z.string().min(8, {
+      message: 'At least 8 characters required.'
+    }),
+    confirm: z.string().min(8, {
+      message: 'At least 8 characters required.'
+    })
+  })
+  .refine((data) => data.password === data.confirm, {
+    message: 'Passwords does not match.',
+    path: ['confirm']
+  });

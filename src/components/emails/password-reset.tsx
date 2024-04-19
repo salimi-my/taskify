@@ -35,7 +35,7 @@ export default function PasswordReset({
           <Container className='max-w-[480px] my-0 mx-auto pt-5 pb-12 px-0'>
             <Link href={baseUrl} className='flex items-center text-gray-800'>
               <Img
-                src={`${baseUrl}/static/taskify-logo.png`}
+                src={`${baseUrl}/taskify-logo.png`}
                 width='32'
                 height='32'
                 className='mr-2'

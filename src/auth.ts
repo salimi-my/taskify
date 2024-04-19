@@ -6,6 +6,7 @@ import { db } from '@/lib/db';
 import authConfig from '@/auth.config';
 import { getUserById } from '@/data/user';
 import { getAccountByUserId } from '@/data/account';
+import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
@@ -42,6 +43,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       // Prevent unverified email sign in
       if (!existingUser || !existingUser.emailVerified) {
         return false;
+      }
+
+      // Check if 2FA enabled
+      if (existingUser.isTwoFactorEnabled) {
+        const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
+          existingUser.id
+        );
+
+        // Prevent unconfirmed 2FA sign in
+        if (!twoFactorConfirmation) {
+          return false;
+        }
+
+        // Delete 2FA confirmation for next sign in
+        await db.twoFactorConfirmation.delete({
+          where: {
+            id: twoFactorConfirmation.id
+          }
+        });
       }
 
       return true;

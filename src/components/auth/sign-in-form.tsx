@@ -108,7 +108,12 @@ export function SignInForm() {
             name='password'
             render={({ field }) => (
               <FormItem className='space-y-1'>
-                <FormLabel>Password</FormLabel>
+                <div className='flex items-center justify-between py-[5px]'>
+                  <FormLabel>Password</FormLabel>
+                  <Button variant='link' className='p-0 h-0' asChild>
+                    <Link href='/auth/forgot-password'>Forgot password?</Link>
+                  </Button>
+                </div>
                 <FormControl>
                   <Input
                     disabled={isPending}

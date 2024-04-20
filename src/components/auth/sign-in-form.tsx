@@ -103,7 +103,7 @@ export function SignInForm() {
               name='code'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>One Time Password</FormLabel>
+                  <FormLabel>Two Factor Authentication Code</FormLabel>
                   <FormControl>
                     <InputOTP autoFocus maxLength={6} {...field}>
                       <InputOTPGroup className='w-full grid grid-cols-6'>
@@ -117,7 +117,7 @@ export function SignInForm() {
                     </InputOTP>
                   </FormControl>
                   <FormDescription>
-                    Please enter the one-time password sent to your email.
+                    Please enter the 6-digit code sent to your email.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

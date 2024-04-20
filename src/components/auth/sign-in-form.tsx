@@ -16,8 +16,14 @@ import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot
+} from '@/components/ui/input-otp';
+import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -29,6 +35,7 @@ export function SignInForm() {
   const callbackUrl = searchParams.get('callbackUrl');
 
   const [isPending, startTransition] = useTransition();
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>('');
   const [success, setSuccess] = useState<string | undefined>('');
 
@@ -57,12 +64,16 @@ export function SignInForm() {
       login(values, callbackUrl)
         .then((data) => {
           if (data?.error) {
-            form.reset();
             setError(data.error);
           }
+
           if (data?.success) {
             form.reset();
             setSuccess(data.success);
+          }
+
+          if (data?.twoFactor) {
+            setShowTwoFactor(true);
           }
         })
         .catch(() => setError('Uh oh! Something went wrong.'));
@@ -85,47 +96,83 @@ export function SignInForm() {
           onSubmit={form.handleSubmit(onSubmit)}
           className='flex flex-col gap-4 -mt-1'
         >
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem className='space-y-1'>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isPending}
-                    placeholder='email@example.com'
-                    autoComplete='email'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem className='space-y-1'>
-                <div className='flex items-center justify-between py-[5px]'>
-                  <FormLabel>Password</FormLabel>
-                  <Button variant='link' className='p-0 h-0' asChild>
-                    <Link href='/auth/forgot-password'>Forgot password?</Link>
-                  </Button>
-                </div>
-                <FormControl>
-                  <Input
-                    disabled={isPending}
-                    type='password'
-                    placeholder='••••••••'
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {/* Display form for 2FA */}
+          {showTwoFactor && (
+            <FormField
+              control={form.control}
+              name='code'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>One Time Password</FormLabel>
+                  <FormControl>
+                    <InputOTP autoFocus maxLength={6} {...field}>
+                      <InputOTPGroup className='w-full grid grid-cols-6'>
+                        <InputOTPSlot className='w-full h-14' index={0} />
+                        <InputOTPSlot className='w-full h-14' index={2} />
+                        <InputOTPSlot className='w-full h-14' index={1} />
+                        <InputOTPSlot className='w-full h-14' index={3} />
+                        <InputOTPSlot className='w-full h-14' index={4} />
+                        <InputOTPSlot className='w-full h-14' index={5} />
+                      </InputOTPGroup>
+                    </InputOTP>
+                  </FormControl>
+                  <FormDescription>
+                    Please enter the one-time password sent to your email.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {/* Display form for no 2FA */}
+          {!showTwoFactor && (
+            <>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem className='space-y-1'>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        placeholder='email@example.com'
+                        autoComplete='email'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='password'
+                render={({ field }) => (
+                  <FormItem className='space-y-1'>
+                    <div className='flex items-center justify-between py-[5px]'>
+                      <FormLabel>Password</FormLabel>
+                      <Button variant='link' className='p-0 h-0' asChild>
+                        <Link href='/auth/forgot-password'>
+                          Forgot password?
+                        </Link>
+                      </Button>
+                    </div>
+                    <FormControl>
+                      <Input
+                        disabled={isPending}
+                        type='password'
+                        placeholder='••••••••'
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+          )}
 
           <Button
             disabled={isPending}

@@ -8,7 +8,7 @@ import { getUserById } from '@/data/user';
 import { getAccountByUserId } from '@/data/account';
 import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   pages: {
     signIn: '/auth/sign-in',
     error: '/auth/sign-in'
@@ -86,7 +86,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.isOAuth = token.isOAuth as boolean;
       }
 
-      if (session.user && trigger === 'update') {
+      if (trigger === 'update') {
         session.user.name = newSession.name;
         session.user.email = newSession.email;
         session.user.tempEmail = newSession.tempEmail;

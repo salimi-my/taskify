@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans';
 import { SessionProvider } from 'next-auth/react';
 
 import { auth } from '@/auth';
+import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 import './globals.css';
@@ -26,6 +27,7 @@ export default async function RootLayout({
         <body className={GeistSans.className}>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
             {children}
+            <Toaster richColors />
           </ThemeProvider>
         </body>
       </html>

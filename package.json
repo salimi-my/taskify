@@ -19,6 +19,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@react-email/components": "0.0.16",
     "@types/bcryptjs": "^2.4.6",
+    "@uidotdev/usehooks": "^2.4.1",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",

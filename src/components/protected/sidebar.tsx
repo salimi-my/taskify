@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { LayoutTemplate } from 'lucide-react';
+import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import Logo from '@public/taskify-logo.png';
 import { useStore } from '@/hooks/use-store';
 import { Button } from '@/components/ui/button';
 import { Menu } from '@/components/protected/menu';
@@ -29,7 +30,13 @@ export function Sidebar() {
           asChild
         >
           <Link href='/dashboard' className='flex items-center gap-2'>
-            <LayoutTemplate />
+            <Image
+              src={Logo}
+              placeholder='blur'
+              priority
+              alt='Taskify Logo'
+              className='w-7 h-7'
+            />
             <h1
               className={cn(
                 'font-bold text-xl whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300',

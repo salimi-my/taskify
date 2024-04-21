@@ -1,4 +1,5 @@
 import * as z from 'zod';
+import { UserRole } from '@prisma/client';
 
 export const RegisterSchema = z
   .object({
@@ -41,3 +42,14 @@ export const ResetPasswordSchema = z
     message: 'Passwords does not match.',
     path: ['confirm']
   });
+
+export const EditProfileSchema = z.object({
+  name: z.string().min(1, {
+    message: 'Name is required.'
+  }),
+  email: z.string().email({
+    message: 'Valid email is required.'
+  }),
+  role: z.enum([UserRole.ADMIN, UserRole.USER]),
+  isTwoFactorEnabled: z.boolean()
+});

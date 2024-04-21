@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/mode-toggle';
 import { UserNav } from '@/components/protected/user-nav';
 import { PageTitle } from '@/components/protected/page-title';
 import { SheetMenu } from '@/components/protected/sheet-menu';
@@ -11,7 +12,7 @@ export function Navbar() {
           <PageTitle />
         </div>
         <div className='flex flex-1 items-center space-x-2 justify-end'>
-          <p>ModeToggleButton</p>
+          <ModeToggle />
           <UserNav />
         </div>
       </div>

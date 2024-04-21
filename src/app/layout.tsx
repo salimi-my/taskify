@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
+import { SessionProvider } from 'next-auth/react';
+
+import { auth } from '@/auth';
 
 import './globals.css';
 
@@ -9,14 +12,18 @@ export const metadata: Metadata = {
     'Taskify: Powerful project management and task management for streamlined workflows, enhanced collaboration, and boosted productivity.'
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
-    <html lang='en'>
-      <body className={GeistSans.className}>{children}</body>
-    </html>
+    <SessionProvider session={session}>
+      <html lang='en'>
+        <body className={GeistSans.className}>{children}</body>
+      </html>
+    </SessionProvider>
   );
 }

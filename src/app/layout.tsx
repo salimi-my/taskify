@@ -3,9 +3,9 @@ import { GeistSans } from 'geist/font/sans';
 import { SessionProvider } from 'next-auth/react';
 
 import { auth } from '@/auth';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 import './globals.css';
-import { ThemeProvider } from '@/providers/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Taskify — Organize, Prioritize, Conquer Your Tasks!',
@@ -23,9 +23,11 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang='en' suppressHydrationWarning>
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <body className={GeistSans.className}>{children}</body>
-        </ThemeProvider>
+        <body className={GeistSans.className}>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+            {children}
+          </ThemeProvider>
+        </body>
       </html>
     </SessionProvider>
   );

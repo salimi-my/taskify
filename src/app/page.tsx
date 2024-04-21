@@ -1,47 +1,16 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
-import Logo from '@public/taskify-logo.png';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
     <div className='flex flex-col min-h-screen'>
-      <header className='px-4 lg:px-6 h-14 flex items-center'>
-        <Link
-          href='/'
-          className='flex justify-start items-center hover:opacity-85 transition-opacity duration-300'
-        >
-          <Image
-            src={Logo}
-            placeholder='blur'
-            priority
-            alt='Taskify Logo'
-            className='w-7 h-7 mr-3'
-          />
-          <h1 className='flex justify-start items-center font-bold text-2xl text-primary'>
-            Taskify
-          </h1>
-          <span className='sr-only'>Taskify</span>
-        </Link>
-        <nav className='ml-auto flex gap-4 sm:gap-6'>
-          <Link
-            className='text-sm font-medium hover:underline underline-offset-4'
-            href='#features'
-          >
-            Features
-          </Link>
-          <Link
-            className='text-sm font-medium hover:underline underline-offset-4'
-            href='/auth/sign-in'
-          >
-            Sign In
-          </Link>
-        </nav>
-      </header>
-      <main className='flex-1'>
+      <Header />
+      <main className='flex-1 mt-14'>
         <section className='w-full py-6 sm:py-12 md:py-24 lg:py-32 xl:py-48'>
-          <div className='container px-4 md:px-6'>
+          <div className='container'>
             <div className='grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]'>
               <div className='bg-neutral-100 dark:bg-neutral-800 mx-auto aspect-video overflow-hidden rounded-xl object-cover w-full lg:order-last lg:aspect-square' />
               <div className='flex flex-col justify-center space-y-4'>
@@ -69,7 +38,7 @@ export default function Home() {
           </div>
         </section>
         <section id='features' className='w-full py-12 md:py-24 lg:py-32'>
-          <div className='container px-4 md:px-6'>
+          <div className='container'>
             <div className='flex flex-col items-center justify-center space-y-4 text-center'>
               <div className='space-y-2'>
                 <div className='inline-block rounded-lg bg-neutral-100 px-3 py-1 text-sm dark:bg-neutral-800'>
@@ -126,7 +95,7 @@ export default function Home() {
         </section>
 
         <section className='w-full py-12 md:py-24 lg:py-32 border-t'>
-          <div className='container px-4 md:px-6'>
+          <div className='container'>
             <div className='flex flex-col items-center justify-center space-y-4 text-center'>
               <div className='space-y-2'>
                 <h2 className='text-3xl font-bold tracking-tighter md:text-4xl text-primary'>
@@ -152,33 +121,7 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className='flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t'>
-        <p className='text-xs text-neutral-500 dark:text-neutral-400'>
-          © {new Date().getFullYear()} Taskify. Created by{' '}
-          <Button
-            variant='link'
-            className='text-xs px-0 text-neutral-500 dark:text-neutral-400'
-            asChild
-          >
-            <Link
-              href='https://www.salimi.my'
-              target='_blank'
-              rel='noopener noreferrer'
-            >
-              Salimi
-            </Link>
-          </Button>
-          .
-        </p>
-        <nav className='sm:ml-auto flex gap-4 sm:gap-6'>
-          <Link className='text-xs hover:underline underline-offset-4' href='#'>
-            Terms of Service
-          </Link>
-          <Link className='text-xs hover:underline underline-offset-4' href='#'>
-            Privacy
-          </Link>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 }

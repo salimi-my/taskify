@@ -2,12 +2,23 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useWindowScroll } from '@uidotdev/usehooks';
 
+import { cn } from '@/lib/utils';
 import Logo from '@public/taskify-logo.png';
 
 export function Header() {
+  const [{ y }] = useWindowScroll();
+
   return (
-    <header className='z-[50] fixed top-0 w-full bg-transparent border-b border-transparent'>
+    <header
+      className={cn(
+        'z-[50] fixed top-0 w-full bg-transparent border-b',
+        y !== null && y > 0
+          ? 'backdrop-blur-sm bg-white/[0.6] dark:bg-black/[0.6] border-neutral-200 dark:border-white/[0.1]'
+          : 'border-transparent'
+      )}
+    >
       <div className='container h-14 flex items-center'>
         <Link
           href='/'

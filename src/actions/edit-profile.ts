@@ -57,7 +57,7 @@ export async function editProfile(values: z.infer<typeof EditProfileSchema>) {
     }
   });
 
-  await update({
+  update({
     user: {
       name: updatedUser.name,
       role: updatedUser.role,

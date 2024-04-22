@@ -66,7 +66,7 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
 
       return true;
     },
-    async session({ token, session, trigger, newSession }) {
+    async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
@@ -86,23 +86,10 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
         session.user.isOAuth = token.isOAuth as boolean;
       }
 
-      if (trigger === 'update') {
-        session.user.name = newSession.name;
-        session.user.email = newSession.email;
-        session.user.tempEmail = newSession.tempEmail;
-        session.user.role = newSession.role;
-        session.user.isOAuth = newSession.isOAuth;
-        session.user.isTwoFactorEnabled = newSession.isTwoFactorEnabled;
-      }
-
       return session;
     },
-    async jwt({ user, token, trigger, session }) {
-      if (user) {
-        token.sub = user.id;
-      }
-
-      if (!user || !token.sub) {
+    async jwt({ token }) {
+      if (!token.sub) {
         return token;
       }
 
@@ -120,15 +107,6 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
       token.tempEmail = existingUser.tempEmail;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
-
-      if (trigger === 'update') {
-        token.name = session.name;
-        token.email = session.email;
-        token.tempEmail = session.tempEmail;
-        token.role = session.role;
-        token.isOAuth = session.isOAuth;
-        token.isTwoFactorEnabled = session.isTwoFactorEnabled;
-      }
 
       return token;
     }

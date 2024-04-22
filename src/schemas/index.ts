@@ -53,3 +53,20 @@ export const EditProfileSchema = z.object({
   role: z.enum([UserRole.ADMIN, UserRole.USER]),
   isTwoFactorEnabled: z.boolean()
 });
+
+export const EditPasswordSchema = z
+  .object({
+    currentPassword: z.string().min(8, {
+      message: 'At least 8 characters are required.'
+    }),
+    newPassword: z.string().min(8, {
+      message: 'At least 8 characters are required.'
+    }),
+    confirmPassword: z.string().min(8, {
+      message: 'At least 8 characters are required.'
+    })
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: 'Passwords does not match.',
+    path: ['confirm']
+  });

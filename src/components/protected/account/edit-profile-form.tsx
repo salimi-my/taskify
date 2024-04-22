@@ -32,11 +32,12 @@ import {
   FormMessage,
   FormDescription
 } from '@/components/ui/form';
+import { cancelNewEmail } from '@/actions/cancel-new-email';
 
 export function EditProfileForm() {
+  const router = useRouter();
   const user = useCurrentUser();
   const { update } = useSession();
-  const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
 
@@ -70,13 +71,33 @@ export function EditProfileForm() {
             router.refresh();
           }
         })
-        .catch(() => {
-          toast.error('Uh oh! Something went wrong.');
-        });
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
     });
   };
 
-  const onCancelEmailUpdate = () => {};
+  const onCancelEmailUpdate = () => {
+    startTransition(() => {
+      cancelNewEmail()
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            update({
+              user: {
+                tempEmail: null
+              }
+            });
+            toast.success(data.success);
+            router.refresh();
+          }
+
+          form.reset();
+        })
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
+    });
+  };
 
   return (
     <Form {...form}>

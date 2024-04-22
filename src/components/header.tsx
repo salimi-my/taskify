@@ -6,6 +6,7 @@ import { useWindowScroll } from '@uidotdev/usehooks';
 
 import { cn } from '@/lib/utils';
 import Logo from '@public/taskify-logo.png';
+import { ModeToggle } from '@/components/mode-toggle';
 
 export function Header() {
   const [{ y }] = useWindowScroll();
@@ -36,13 +37,8 @@ export function Header() {
           </h1>
           <span className='sr-only'>Taskify</span>
         </Link>
-        <nav className='ml-auto flex gap-4 sm:gap-6'>
-          <Link
-            className='text-sm font-medium hover:underline underline-offset-4'
-            href='#features'
-          >
-            Features
-          </Link>
+        <nav className='ml-auto flex items-center gap-4 sm:gap-6'>
+          <ModeToggle />
           <Link
             className='text-sm font-medium hover:underline underline-offset-4'
             href='/auth/sign-in'

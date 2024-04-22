@@ -59,15 +59,13 @@ export function EditProfileForm() {
           }
 
           if (data.success) {
-            // async () => {
-            //   await update({
-            //     user: {
-            //       name: values.name,
-            //       role: values.role,
-            //       isTwoFactorEnabled: values.isTwoFactorEnabled
-            //     }
-            //   });
-            // };
+            update({
+              user: {
+                name: values.name,
+                role: values.role,
+                isTwoFactorEnabled: values.isTwoFactorEnabled
+              }
+            });
             toast.success(data.success);
             router.refresh();
           }

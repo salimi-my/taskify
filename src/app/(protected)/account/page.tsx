@@ -26,15 +26,17 @@ export default async function AccountPage() {
         </CardContent>
       </Card>
       {user?.isOAuth === false && (
-        <Card className='rounded-lg border-none'>
-          <CardHeader className='mx-[1px] pb-9'>
-            <CardTitle className='text-xl font-semibold'>Password</CardTitle>
-            <CardDescription>Manage your account password.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <EditPasswordForm />
-          </CardContent>
-        </Card>
+        <div>
+          <Card className='rounded-lg border-none'>
+            <CardHeader className='mx-[1px] pb-9'>
+              <CardTitle className='text-xl font-semibold'>Password</CardTitle>
+              <CardDescription>Manage your account password.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <EditPasswordForm />
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );

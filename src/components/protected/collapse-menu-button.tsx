@@ -156,7 +156,9 @@ export default function CollapseMenuButton({
               </Button>
             </DropdownMenuTrigger>
           </TooltipTrigger>
-          <TooltipContent side='right'>{label}</TooltipContent>
+          <TooltipContent side='right' align='start' alignOffset={2}>
+            {label}
+          </TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <DropdownMenuContent side='right' sideOffset={25} align='start'>

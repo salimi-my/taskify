@@ -1,10 +1,9 @@
 import { Suspense } from 'react';
 
-import { getUsers } from '@/data/users';
 import { FilterSchema } from '@/schemas';
 import type { SearchParams } from '@/types';
+import Table from '@/components/protected/users/table/table';
 import { DataTableCard } from '@/components/protected/data-table-card';
-import { UsersTable } from '@/components/protected/users/table/users-table';
 import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton';
 
 export interface UsersPageProps {
@@ -14,11 +13,10 @@ export interface UsersPageProps {
 export default async function UsersPage({ searchParams }: UsersPageProps) {
   const search = FilterSchema.parse(searchParams);
 
-  const usersPromise = getUsers(search);
-
   return (
     <DataTableCard title='Users' description="Here's the list of all users.">
       <Suspense
+        key={JSON.stringify(search)}
         fallback={
           <DataTableSkeleton
             columnCount={5}
@@ -29,7 +27,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
           />
         }
       >
-        <UsersTable usersPromise={usersPromise} />
+        <Table searchParams={searchParams} />
       </Suspense>
     </DataTableCard>
   );

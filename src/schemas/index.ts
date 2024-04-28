@@ -76,6 +76,7 @@ export const FilterSchema = z.object({
   per_page: z.coerce.number().default(10),
   sort: z.string().optional(),
   keyword: z.string().optional(),
+  role: z.enum([UserRole.ADMIN, UserRole.USER]).optional(),
   status: z.string().optional(),
   priority: z.string().optional(),
   from: z.string().optional(),

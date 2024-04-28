@@ -37,7 +37,7 @@ export function DataTableToolbar<TData>({
   return (
     <div
       className={cn(
-        'flex w-full items-center justify-between space-x-2 overflow-auto p-1',
+        'flex w-full items-center justify-between space-x-2 overflow-auto py-1',
         className
       )}
       {...props}
@@ -49,7 +49,7 @@ export function DataTableToolbar<TData>({
               table.getColumn(column.value ? String(column.value) : '') && (
                 <div
                   key={String(column.value)}
-                  className='flex justify-between items-center h-[32px] rounded-md border border-input shadow-sm focus-within:outline-none focus-within:ring-1 focus-within:ring-ring'
+                  className='flex justify-between items-center h-[32px] rounded-md border border-input shadow-sm focus-within:outline-none ring-inset focus-within:ring-1 focus-within:ring-ring'
                 >
                   <MagnifyingGlassIcon className='h-4 w-4 mx-2 text-muted-foreground' />
                   <Input

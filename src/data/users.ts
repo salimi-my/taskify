@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import type { User } from '@prisma/client';
+import type { User, UserRole } from '@prisma/client';
 import { unstable_noStore as noStore } from 'next/cache';
 
 import { db } from '@/lib/db';
@@ -39,7 +39,9 @@ export async function getUsers(filters: z.infer<typeof FilterSchema>) {
         skip: offset,
         take: limit,
         where: {
-          role,
+          role: {
+            in: role ? (role.split('.') as UserRole[]) : undefined
+          },
           createdAt: {
             gte: fromDay,
             lte: toDay

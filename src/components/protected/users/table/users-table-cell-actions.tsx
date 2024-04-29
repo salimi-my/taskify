@@ -8,7 +8,7 @@ import {
 } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import DeleteUsersDialog from '@/components/protected/users/table/delete-users-dialog';
+import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
 import {
   DropdownMenu,
   DropdownMenuItem,

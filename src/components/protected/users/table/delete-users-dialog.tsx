@@ -19,20 +19,18 @@ import {
   DialogDescription
 } from '@/components/ui/dialog';
 
-interface DeleteUsersDialogProps
-  extends React.ComponentPropsWithoutRef<typeof Dialog> {
+interface DeleteUsersDialogProps {
   isOpen: boolean;
   onClose: () => void;
   users: Row<User>[];
   onSuccess?: () => void;
 }
 
-export default function DeleteUsersDialog({
+export function DeleteUsersDialog({
   users,
   isOpen,
   onClose,
-  onSuccess,
-  ...props
+  onSuccess
 }: DeleteUsersDialogProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -53,6 +51,7 @@ export default function DeleteUsersDialog({
 
           if (data.success) {
             onClose();
+            onSuccess?.();
             toast.success(data.success);
             router.refresh();
           }
@@ -62,7 +61,7 @@ export default function DeleteUsersDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onChange} {...props}>
+    <Dialog open={isOpen} onOpenChange={onChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Are you sure?</DialogTitle>

@@ -21,9 +21,7 @@ interface UsersTableCellActionsProps {
   rows: Row<User>[];
 }
 
-export default function UsersTableCellActions({
-  rows
-}: UsersTableCellActionsProps) {
+export function UsersTableCellActions({ rows }: UsersTableCellActionsProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   return (

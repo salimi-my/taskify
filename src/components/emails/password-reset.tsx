@@ -19,7 +19,7 @@ interface PasswordResetProps {
   resetLink: string;
 }
 
-export default function PasswordReset({
+export function PasswordReset({
   name,
   baseUrl,
   resetLink

@@ -7,7 +7,7 @@ export interface TableProps {
   searchParams: SearchParams;
 }
 
-export default function Table({ searchParams }: TableProps) {
+export function Table({ searchParams }: TableProps) {
   const search = FilterSchema.parse(searchParams);
 
   const usersPromise = getUsers(search);

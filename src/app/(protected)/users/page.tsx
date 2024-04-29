@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { FilterSchema } from '@/schemas';
 import type { SearchParams } from '@/types';
-import Table from '@/components/protected/users/table/table';
+import { Table } from '@/components/protected/users/table/table';
 import { DataTableCard } from '@/components/protected/data-table-card';
 import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton';
 

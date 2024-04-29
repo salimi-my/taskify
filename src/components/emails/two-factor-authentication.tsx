@@ -18,7 +18,7 @@ interface TwoFactorAuthenticationProps {
   token: string;
 }
 
-export default function TwoFactorAuthentication({
+export function TwoFactorAuthentication({
   name,
   baseUrl,
   token

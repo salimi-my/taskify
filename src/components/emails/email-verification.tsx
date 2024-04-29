@@ -19,7 +19,7 @@ interface EmailVerificationProps {
   verifyLink: string;
 }
 
-export default function EmailVerification({
+export function EmailVerification({
   name,
   baseUrl,
   verifyLink

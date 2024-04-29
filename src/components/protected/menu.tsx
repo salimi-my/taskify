@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { getPages } from '@/lib/pages';
 import { Button } from '@/components/ui/button';
-import CollapseMenuButton from '@/components/protected/collapse-menu-button';
+import { CollapseMenuButton } from '@/components/protected/collapse-menu-button';
 import {
   Tooltip,
   TooltipTrigger,

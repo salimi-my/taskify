@@ -9,7 +9,7 @@ import { useDataTable } from '@/hooks/use-data-table';
 import { DataTable } from '@/components/data-table/data-table';
 import { DataTableToolbar } from '@/components/data-table/data-table-toolbar';
 import { getColumns } from '@/components/protected/users/table/users-table-columns';
-import UsersTableToolbarActions from '@/components/protected/users/table/users-table-toolbar-actions';
+import { UsersTableToolbarActions } from '@/components/protected/users/table/users-table-toolbar-actions';
 
 interface UsersTableProps {
   usersPromise: ReturnType<typeof getUsers>;

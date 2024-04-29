@@ -14,8 +14,9 @@ import { EditProfileSchema } from '@/schemas';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { editProfile } from '@/actions/edit-profile';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { editProfile } from '@/actions/account/edit-profile';
+import { cancelNewEmail } from '@/actions/account/cancel-new-email';
 import {
   Select,
   SelectItem,
@@ -32,7 +33,6 @@ import {
   FormMessage,
   FormDescription
 } from '@/components/ui/form';
-import { cancelNewEmail } from '@/actions/cancel-new-email';
 
 export function EditProfileForm() {
   const router = useRouter();

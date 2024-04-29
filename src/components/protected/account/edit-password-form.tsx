@@ -12,8 +12,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { EditPasswordSchema } from '@/schemas';
 import { Button } from '@/components/ui/button';
-import { editPassword } from '@/actions/edit-password';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { editPassword } from '@/actions/account/edit-password';
 import {
   Form,
   FormItem,

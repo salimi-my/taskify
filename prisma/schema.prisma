@@ -20,7 +20,7 @@ model User {
   tempEmail               String?
   emailVerified           DateTime?
   image                   String?
-  forceNewPassword        Boolean                 @default(false)
+  isForceNewPassword      Boolean                 @default(false)
   password                String?
   createdAt               DateTime                @default(now())
   updatedAt               DateTime                @updatedAt

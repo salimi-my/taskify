@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
-import { emailVerification } from '@/actions/email-verification';
+import { emailVerification } from '@/actions/auth/email-verification';
 
 export function EmailVerificationForm() {
   const submit = useRef(false);

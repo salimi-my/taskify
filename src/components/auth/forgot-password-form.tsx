@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { ForgotPasswordSchema } from '@/schemas';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
-import { forgotPassword } from '@/actions/forgot-password';
+import { forgotPassword } from '@/actions/auth/forgot-password';
 import {
   Form,
   FormControl,

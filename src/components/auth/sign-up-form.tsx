@@ -8,18 +8,18 @@ import { useState, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { RegisterSchema } from '@/schemas';
-import { register } from '@/actions/register';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Social } from '@/components/auth/social';
+import { register } from '@/actions/auth/register';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import {
   Form,
-  FormControl,
-  FormField,
   FormItem,
+  FormField,
   FormLabel,
+  FormControl,
   FormMessage
 } from '@/components/ui/form';
 

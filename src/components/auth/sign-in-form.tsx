@@ -8,8 +8,8 @@ import { useState, useTransition } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { login } from '@/actions/login';
 import { LoginSchema } from '@/schemas';
+import { login } from '@/actions/auth/login';
 import { Input } from '@/components/ui/input';
 import { Social } from '@/components/auth/social';
 import { Button } from '@/components/ui/button';
@@ -17,17 +17,17 @@ import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
 import {
   InputOTP,
-  InputOTPGroup,
-  InputOTPSlot
+  InputOTPSlot,
+  InputOTPGroup
 } from '@/components/ui/input-otp';
 import {
   Form,
-  FormControl,
-  FormDescription,
-  FormField,
   FormItem,
+  FormField,
   FormLabel,
-  FormMessage
+  FormControl,
+  FormMessage,
+  FormDescription
 } from '@/components/ui/form';
 
 export function SignInForm() {

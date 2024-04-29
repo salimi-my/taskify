@@ -61,8 +61,8 @@ export function CreateUserDialog({
       email: user?.original.email ? user.original.email : '',
       role: user?.original.role || 'USER',
       password: '',
-      isForceNewPassword: user?.original.isForceNewPassword || false,
-      isEmailVerified: user?.original.emailVerified ? true : false
+      isForceNewPassword: user?.original.isForceNewPassword || true,
+      isEmailVerified: user?.original.emailVerified ? true : false || true
     }
   });
 

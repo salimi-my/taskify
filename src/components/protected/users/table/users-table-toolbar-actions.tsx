@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-
 import type { User } from '@prisma/client';
-import { Button } from '@/components/ui/button';
 import { TrashIcon } from '@radix-ui/react-icons';
 import type { Table } from '@tanstack/react-table';
+
+import { Button } from '@/components/ui/button';
 import DeleteUsersDialog from '@/components/protected/users/table/delete-users-dialog';
 
 interface UsersTableToolbarActionsProps {
@@ -25,9 +25,15 @@ export default function UsersTableToolbarActions({
             variant='outline'
             size='sm'
             onClick={() => setIsDialogOpen(true)}
+            className='group'
           >
-            <TrashIcon className='mr-2 size-4' aria-hidden='true' />
-            Delete ({table.getFilteredSelectedRowModel().rows.length})
+            <TrashIcon
+              className='mr-2 size-4 group-hover:text-destructive'
+              aria-hidden='true'
+            />
+            <span className='group-hover:text-destructive'>
+              Delete ({table.getFilteredSelectedRowModel().rows.length})
+            </span>
           </Button>
           <DeleteUsersDialog
             isOpen={isDialogOpen}

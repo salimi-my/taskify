@@ -83,3 +83,14 @@ export const FilterSchema = z.object({
   from: z.string().optional(),
   to: z.string().optional()
 });
+
+export const CreateUserSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required.' }),
+  email: z.string().email({ message: 'Valid email address is required.' }),
+  role: z.enum([UserRole.ADMIN, UserRole.USER]),
+  password: z
+    .string()
+    .min(8, { message: 'At least 8 characters are required.' }),
+  isForceNewPassword: z.boolean(),
+  isEmailVerified: z.boolean()
+});

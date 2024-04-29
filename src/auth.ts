@@ -45,6 +45,11 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
         return false;
       }
 
+      // Prevent user with force new password to sign in
+      if (existingUser.isForceNewPassword) {
+        return false;
+      }
+
       // Check if 2FA enabled
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(

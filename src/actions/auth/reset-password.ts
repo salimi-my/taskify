@@ -46,12 +46,19 @@ export async function resetPassword(
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedPassword = await bcrypt.hash(password, salt);
 
+  // Check if user with force new password enabled
+  let isForceNewPassword = undefined;
+  if (existingUser.isForceNewPassword) {
+    isForceNewPassword = false;
+  }
+
   await db.user.update({
     where: {
       id: existingUser.id
     },
     data: {
-      password: hashedPassword
+      password: hashedPassword,
+      isForceNewPassword
     }
   });
 

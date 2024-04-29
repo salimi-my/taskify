@@ -2,6 +2,7 @@
 
 import * as z from 'zod';
 import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/db';
 import { signIn } from '@/auth';
@@ -12,6 +13,7 @@ import { getTwoFactorTokenByEmail } from '@/data/two-factor-token';
 import { sendVerificationEmail, sendTwoFactorTokenEmail } from '@/lib/mail';
 import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
 import {
+  generatePasswordResetToken,
   generateTwoFactorToken,
   generateVerificationToken
 } from '@/lib/tokens';
@@ -48,6 +50,13 @@ export async function login(
     );
 
     return { success: 'Confirmation email sent. Check your email to verify.' };
+  }
+
+  // Check if user with force new password enabled
+  if (existingUser.isForceNewPassword) {
+    const passwordResetToken = await generatePasswordResetToken(email);
+
+    redirect('/auth/reset-password?token=' + passwordResetToken.token);
   }
 
   // Check if 2FA enabled

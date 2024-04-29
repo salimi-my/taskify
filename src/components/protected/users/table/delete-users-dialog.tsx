@@ -9,7 +9,7 @@ import { type Row } from '@tanstack/react-table';
 import { TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import { deleteUser } from '@/actions/delete-user';
+import { deleteUser } from '@/actions/users/delete-user';
 import {
   Dialog,
   DialogClose,

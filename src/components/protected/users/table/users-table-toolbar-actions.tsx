@@ -2,20 +2,22 @@
 
 import { useState } from 'react';
 import type { User } from '@prisma/client';
-import { TrashIcon } from '@radix-ui/react-icons';
 import type { Table } from '@tanstack/react-table';
+import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import DeleteUsersDialog from '@/components/protected/users/table/delete-users-dialog';
+import { CreateUserDialog } from '@/components/protected/users/table/create-user-dialog';
+import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
 
 interface UsersTableToolbarActionsProps {
   table: Table<User>;
 }
 
-export default function UsersTableToolbarActions({
+export function UsersTableToolbarActions({
   table
 }: UsersTableToolbarActionsProps) {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   return (
     <div className='flex items-center gap-2'>
@@ -24,7 +26,7 @@ export default function UsersTableToolbarActions({
           <Button
             variant='outline'
             size='sm'
-            onClick={() => setIsDialogOpen(true)}
+            onClick={() => setIsDeleteOpen(true)}
             className='group'
           >
             <TrashIcon
@@ -36,13 +38,27 @@ export default function UsersTableToolbarActions({
             </span>
           </Button>
           <DeleteUsersDialog
-            isOpen={isDialogOpen}
-            onClose={() => setIsDialogOpen(false)}
+            isOpen={isDeleteOpen}
+            onClose={() => setIsDeleteOpen(false)}
             users={table.getFilteredSelectedRowModel().rows}
             onSuccess={() => table.toggleAllPageRowsSelected(false)}
           />
         </>
       ) : null}
+      <>
+        <Button
+          variant='outline'
+          size='sm'
+          onClick={() => setIsCreateOpen(true)}
+        >
+          <PlusIcon className='mr-2 size-4' aria-hidden='true' />
+          New user
+        </Button>
+        <CreateUserDialog
+          isOpen={isCreateOpen}
+          onClose={() => setIsCreateOpen(false)}
+        />
+      </>
     </div>
   );
 }

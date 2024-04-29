@@ -61,7 +61,11 @@ export function getColumns(): ColumnDef<User>[] {
 
         if (!role) return null;
 
-        return <Badge variant='outline'>{role}</Badge>;
+        return (
+          <Badge variant='outline'>
+            {role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()}
+          </Badge>
+        );
       },
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id));

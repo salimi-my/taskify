@@ -36,7 +36,7 @@ export async function login(
 
   if (!existingUser || !existingUser.name || !existingUser.email) {
     return {
-      error: 'User does not exist.'
+      error: 'Invalid email or password. Please try again.'
     };
   }
 

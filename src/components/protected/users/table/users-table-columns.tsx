@@ -64,11 +64,14 @@ export function getColumns(): ColumnDef<UserWithProvider>[] {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title='Provider' />
       ),
-      cell: ({ row }) =>
-        row.original.Account?.provider
-          ? row.original.Account.provider.charAt(0).toUpperCase() +
-            row.original.Account.provider.slice(1).toLowerCase()
-          : 'N/A'
+      cell: ({ row }) => (
+        <Badge variant='outline'>
+          {row.original.Account?.provider
+            ? row.original.Account.provider.charAt(0).toUpperCase() +
+              row.original.Account.provider.slice(1).toLowerCase()
+            : 'Credentials'}
+        </Badge>
+      )
     },
     {
       accessorKey: 'role',

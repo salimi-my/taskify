@@ -1,11 +1,28 @@
 import * as z from 'zod';
-import type { User, UserRole } from '@prisma/client';
+import type { Prisma, UserRole } from '@prisma/client';
 import { unstable_noStore as noStore } from 'next/cache';
 
 import { db } from '@/lib/db';
 import { FilterSchema } from '@/schemas';
 
-export async function getUsers(filters: z.infer<typeof FilterSchema>) {
+type UserWithProvider = Prisma.UserGetPayload<{
+  include: {
+    Account: {
+      select: {
+        provider: true;
+      };
+    };
+  };
+}>;
+
+interface ReturnData {
+  data: UserWithProvider[];
+  pageCount: number;
+}
+
+export async function getUsers(
+  filters: z.infer<typeof FilterSchema>
+): Promise<ReturnData> {
   noStore();
   const { page, per_page, sort, name, role, from, to } = filters;
 
@@ -20,16 +37,33 @@ export async function getUsers(filters: z.infer<typeof FilterSchema>) {
     const [column, order] = (sort?.split('.').filter(Boolean) ?? [
       'createdAt',
       'desc'
-    ]) as [keyof User | undefined, 'asc' | 'desc' | undefined];
+    ]) as [keyof UserWithProvider | undefined, 'asc' | 'desc' | undefined];
 
     // Convert the date strings to Date objects
     const fromDay = from ? new Date(from) : undefined;
     const toDay = to ? new Date(to) : undefined;
 
     // Define orderBy
-    const orderBy: { [key: string]: 'asc' | 'desc' } =
-      column && ['name', 'email', 'role', 'createdAt'].includes(column)
-        ? order === 'asc'
+    const orderBy:
+      | { [key: string]: 'asc' | 'desc' }
+      | { [key: string]: { [key: string]: 'asc' | 'desc' } } =
+      column &&
+      ['name', 'email', 'Account_provider', 'role', 'createdAt'].includes(
+        column
+      )
+        ? column.split('_').length > 1
+          ? order === 'asc'
+            ? {
+                [column.split('_')[0]]: {
+                  [column.split('_')[1]]: 'asc'
+                }
+              }
+            : {
+                [column.split('_')[0]]: {
+                  [column.split('_')[1]]: 'desc'
+                }
+              }
+          : order === 'asc'
           ? { [column]: 'asc' }
           : { [column]: 'desc' }
         : { createdAt: 'desc' };
@@ -38,6 +72,13 @@ export async function getUsers(filters: z.infer<typeof FilterSchema>) {
       db.user.findMany({
         skip: offset,
         take: limit,
+        include: {
+          Account: {
+            select: {
+              provider: true
+            }
+          }
+        },
         where: {
           role: {
             in: role ? (role.split('.') as UserRole[]) : undefined

@@ -7,8 +7,8 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { type Row } from '@tanstack/react-table';
-import { UserRole, type User } from '@prisma/client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { type Prisma, UserRole } from '@prisma/client';
 
 import { CreateUserSchema } from '@/schemas';
 import { Input } from '@/components/ui/input';
@@ -40,10 +40,20 @@ import {
   FormDescription
 } from '@/components/ui/form';
 
+type UserWithProvider = Prisma.UserGetPayload<{
+  include: {
+    Account: {
+      select: {
+        provider: true;
+      };
+    };
+  };
+}>;
+
 interface CreateUserDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  user?: Row<User>;
+  user?: Row<UserWithProvider>;
 }
 
 export function CreateUserDialog({

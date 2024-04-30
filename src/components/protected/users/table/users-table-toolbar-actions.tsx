@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import type { User } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import type { Table } from '@tanstack/react-table';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
@@ -9,8 +9,18 @@ import { Button } from '@/components/ui/button';
 import { CreateUserDialog } from '@/components/protected/users/table/create-user-dialog';
 import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
 
+type UserWithProvider = Prisma.UserGetPayload<{
+  include: {
+    Account: {
+      select: {
+        provider: true;
+      };
+    };
+  };
+}>;
+
 interface UsersTableToolbarActionsProps {
-  table: Table<User>;
+  table: Table<UserWithProvider>;
 }
 
 export function UsersTableToolbarActions({

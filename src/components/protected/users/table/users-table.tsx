@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useMemo } from 'react';
-import { UserRole, type User } from '@prisma/client';
+import { type Prisma, UserRole } from '@prisma/client';
 
 import { getUsers } from '@/data/users';
 import { DataTableFilterField } from '@/types';
@@ -10,6 +10,16 @@ import { DataTable } from '@/components/data-table/data-table';
 import { DataTableToolbar } from '@/components/data-table/data-table-toolbar';
 import { getColumns } from '@/components/protected/users/table/users-table-columns';
 import { UsersTableToolbarActions } from '@/components/protected/users/table/users-table-toolbar-actions';
+
+type UserWithProvider = Prisma.UserGetPayload<{
+  include: {
+    Account: {
+      select: {
+        provider: true;
+      };
+    };
+  };
+}>;
 
 interface UsersTableProps {
   usersPromise: ReturnType<typeof getUsers>;
@@ -22,7 +32,7 @@ export function UsersTable({ usersPromise }: UsersTableProps) {
   const columns = useMemo(() => getColumns(), []);
 
   // Render either a faceted filter or a search filter based on the `options` prop
-  const filterFields: DataTableFilterField<User>[] = [
+  const filterFields: DataTableFilterField<UserWithProvider>[] = [
     {
       label: 'Search',
       value: 'name',

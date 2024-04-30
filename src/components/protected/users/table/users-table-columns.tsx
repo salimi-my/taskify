@@ -1,6 +1,6 @@
 'use client';
 
-import { UserRole, type User } from '@prisma/client';
+import { type Prisma, UserRole } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 
 import { formatDate } from '@/lib/utils';
@@ -9,7 +9,17 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
 import { UsersTableCellActions } from '@/components/protected/users/table/users-table-cell-actions';
 
-export function getColumns(): ColumnDef<User>[] {
+type UserWithProvider = Prisma.UserGetPayload<{
+  include: {
+    Account: {
+      select: {
+        provider: true;
+      };
+    };
+  };
+}>;
+
+export function getColumns(): ColumnDef<UserWithProvider>[] {
   return [
     {
       id: 'select',
@@ -48,6 +58,17 @@ export function getColumns(): ColumnDef<User>[] {
         <DataTableColumnHeader column={column} title='Email' />
       ),
       cell: ({ row }) => row.getValue('email')
+    },
+    {
+      accessorKey: 'Account.provider',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title='Provider' />
+      ),
+      cell: ({ row }) =>
+        row.original.Account?.provider
+          ? row.original.Account.provider.charAt(0).toUpperCase() +
+            row.original.Account.provider.slice(1).toLowerCase()
+          : 'N/A'
     },
     {
       accessorKey: 'role',

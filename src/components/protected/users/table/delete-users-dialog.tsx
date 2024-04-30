@@ -3,7 +3,7 @@
 import { toast } from 'sonner';
 import { useTransition } from 'react';
 import { Loader2 } from 'lucide-react';
-import type { User } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { type Row } from '@tanstack/react-table';
 
@@ -19,10 +19,20 @@ import {
   DialogDescription
 } from '@/components/ui/dialog';
 
+type UserWithProvider = Prisma.UserGetPayload<{
+  include: {
+    Account: {
+      select: {
+        provider: true;
+      };
+    };
+  };
+}>;
+
 interface DeleteUsersDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  users: Row<User>[];
+  users: Row<UserWithProvider>[];
   onSuccess?: () => void;
 }
 

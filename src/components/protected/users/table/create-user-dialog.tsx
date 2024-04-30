@@ -5,10 +5,9 @@ import { toast } from 'sonner';
 import { useTransition } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { UserRole } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import { type Row } from '@tanstack/react-table';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type Prisma, UserRole } from '@prisma/client';
 
 import { CreateUserSchema } from '@/schemas';
 import { Input } from '@/components/ui/input';
@@ -40,39 +39,24 @@ import {
   FormDescription
 } from '@/components/ui/form';
 
-type UserWithProvider = Prisma.UserGetPayload<{
-  include: {
-    Account: {
-      select: {
-        provider: true;
-      };
-    };
-  };
-}>;
-
 interface CreateUserDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  user?: Row<UserWithProvider>;
 }
 
-export function CreateUserDialog({
-  isOpen,
-  onClose,
-  user
-}: CreateUserDialogProps) {
+export function CreateUserDialog({ isOpen, onClose }: CreateUserDialogProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof CreateUserSchema>>({
     resolver: zodResolver(CreateUserSchema),
     defaultValues: {
-      name: user?.original.name || '',
-      email: user?.original.email ? user.original.email : '',
-      role: user?.original.role || 'USER',
+      name: '',
+      email: '',
+      role: 'USER',
       password: '',
-      isForceNewPassword: user?.original.isForceNewPassword || true,
-      isEmailVerified: user?.original.emailVerified ? true : false || true
+      isForceNewPassword: true,
+      isEmailVerified: true
     }
   });
 
@@ -104,11 +88,9 @@ export function CreateUserDialog({
     <Dialog open={isOpen} onOpenChange={onChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{user ? 'Edit User' : 'Create User'}</DialogTitle>
+          <DialogTitle>Create User</DialogTitle>
           <DialogDescription>
-            {user
-              ? 'Fill out the form below to edit this user.'
-              : 'Fill out the form below to create a new user.'}
+            Fill out the form below to create a new user.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

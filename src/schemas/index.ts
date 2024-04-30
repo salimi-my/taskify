@@ -94,3 +94,23 @@ export const CreateUserSchema = z.object({
   isForceNewPassword: z.boolean(),
   isEmailVerified: z.boolean()
 });
+
+export const EditUserSchema = z.object({
+  id: z.string().min(1, { message: 'ID is required.' }),
+  name: z.string().min(1, { message: 'Name is required.' }),
+  email: z.string().email({ message: 'Valid email address is required.' }),
+  role: z.enum([UserRole.ADMIN, UserRole.USER]),
+  password: z
+    .string()
+    .optional()
+    .refine(
+      (value) =>
+        value === undefined ||
+        value === null ||
+        value.length === 0 ||
+        value.length >= 8,
+      { message: 'At least 8 characters are required.' }
+    ),
+  isForceNewPassword: z.boolean(),
+  isEmailVerified: z.boolean()
+});

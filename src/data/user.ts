@@ -27,3 +27,20 @@ export async function getUserById(id: string) {
     return null;
   }
 }
+
+export async function getUserByEmailExcludeOwner(email: string, id: string) {
+  try {
+    const user = await db.user.findFirst({
+      where: {
+        email,
+        id: {
+          not: id
+        }
+      }
+    });
+
+    return user;
+  } catch {
+    return null;
+  }
+}

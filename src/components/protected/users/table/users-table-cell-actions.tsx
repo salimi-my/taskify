@@ -28,10 +28,10 @@ type UserWithProvider = Prisma.UserGetPayload<{
 }>;
 
 interface UsersTableCellActionsProps {
-  rows: Row<UserWithProvider>[];
+  row: Row<UserWithProvider>;
 }
 
-export function UsersTableCellActions({ rows }: UsersTableCellActionsProps) {
+export function UsersTableCellActions({ row }: UsersTableCellActionsProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   return (
@@ -39,7 +39,7 @@ export function UsersTableCellActions({ rows }: UsersTableCellActionsProps) {
       <DeleteUsersDialog
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
-        users={rows}
+        users={[row]}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

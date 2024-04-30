@@ -101,7 +101,7 @@ export function getColumns(): ColumnDef<UserWithProvider>[] {
     },
     {
       id: 'actions',
-      cell: ({ row }) => <UsersTableCellActions rows={[row]} />
+      cell: ({ row }) => <UsersTableCellActions row={row} />
     }
   ];
 }

@@ -8,6 +8,7 @@ import {
 } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
+import { EditUserDialog } from '@/components/protected/users/table/edit-user-dialog';
 import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
 import {
   DropdownMenu,
@@ -32,6 +33,7 @@ interface UsersTableCellActionsProps {
 }
 
 export function UsersTableCellActions({ row }: UsersTableCellActionsProps) {
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   return (
@@ -40,6 +42,11 @@ export function UsersTableCellActions({ row }: UsersTableCellActionsProps) {
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         users={[row]}
+      />
+      <EditUserDialog
+        isOpen={isEditDialogOpen}
+        onClose={() => setIsEditDialogOpen(false)}
+        user={row}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -52,7 +59,7 @@ export function UsersTableCellActions({ row }: UsersTableCellActionsProps) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-40'>
-          <DropdownMenuItem onSelect={() => {}}>
+          <DropdownMenuItem onSelect={() => setIsEditDialogOpen(true)}>
             <Pencil2Icon className='mr-2 size-4' aria-hidden='true' />
             Edit
           </DropdownMenuItem>

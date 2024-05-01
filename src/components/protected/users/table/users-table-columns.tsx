@@ -1,11 +1,13 @@
 'use client';
 
+import { User as UserIcon } from 'lucide-react';
 import { type User, UserRole } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
 
 import { formatDate } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
 import { UsersTableCellActions } from '@/components/protected/users/table/users-table-cell-actions';
 
@@ -44,7 +46,20 @@ export function getColumns(): ColumnDef<UserWithProvider>[] {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title='Name' />
       ),
-      cell: ({ row }) => row.getValue('name')
+      cell: ({ row }) => (
+        <div className='flex space-x-2 items-center'>
+          <Avatar className='h-8 w-8 border'>
+            <AvatarImage
+              src={row.original.image || ''}
+              alt={row.original.name || ''}
+            />
+            <AvatarFallback>
+              <UserIcon className='w-5 h-5 text-muted-foreground' />
+            </AvatarFallback>
+          </Avatar>
+          <p className='max-w-[120px] truncate'>{row.getValue('name')}</p>
+        </div>
+      )
     },
     {
       accessorKey: 'email',

@@ -18,7 +18,7 @@ export async function getUsers(
   filters: z.infer<typeof UserFilterSchema>
 ): Promise<ReturnData> {
   noStore();
-  const { page, per_page, sort, name, role, from, to } = filters;
+  const { page, per_page, sort, name, role, provider, from, to } = filters;
 
   try {
     // Number of items per page
@@ -36,6 +36,41 @@ export async function getUsers(
     // Convert the date strings to Date objects
     const fromDay = from ? new Date(from) : undefined;
     const toDay = to ? new Date(to) : undefined;
+
+    // Configure OR clause
+    let andClause = [];
+    if (name) {
+      andClause.push({
+        OR: [{ name: { contains: name } }, { email: { contains: name } }]
+      });
+    }
+    if (provider) {
+      const providerList = provider
+        .split('.')
+        .filter((p) => p !== 'credentials');
+
+      if (providerList.length === 0) {
+        andClause.push({
+          Account: null
+        });
+      } else {
+        const providerFilter = {
+          Account: {
+            provider: {
+              in: providerList
+            }
+          }
+        };
+
+        if (provider === 'credentials') {
+          andClause.push(providerFilter);
+        } else {
+          andClause.push({
+            OR: [{ Account: null }, providerFilter]
+          });
+        }
+      }
+    }
 
     // Define orderBy
     const orderBy:
@@ -79,40 +114,20 @@ export async function getUsers(
             gte: fromDay,
             lte: toDay
           },
-          OR: name
-            ? [
-                {
-                  name: {
-                    contains: name
-                  }
-                },
-                {
-                  email: {
-                    contains: name
-                  }
-                }
-              ]
-            : undefined
+          AND: andClause.length > 0 ? andClause : undefined
         },
         orderBy
       }),
       db.user.count({
         where: {
-          OR:
-            typeof name === 'string'
-              ? [
-                  {
-                    name: {
-                      contains: name
-                    }
-                  },
-                  {
-                    email: {
-                      contains: name
-                    }
-                  }
-                ]
-              : undefined
+          role: {
+            in: role ? (role.split('.') as UserRole[]) : undefined
+          },
+          createdAt: {
+            gte: fromDay,
+            lte: toDay
+          },
+          AND: andClause.length > 0 ? andClause : undefined
         },
         orderBy
       })
@@ -124,7 +139,7 @@ export async function getUsers(
       const { Account, ...userWithoutAccount } = user;
       return {
         ...userWithoutAccount,
-        provider: Account?.provider || 'Credentials'
+        provider: Account?.provider || 'credentials'
       };
     });
 

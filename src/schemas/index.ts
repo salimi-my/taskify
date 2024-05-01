@@ -77,6 +77,7 @@ export const UserFilterSchema = z.object({
   sort: z.string().optional(),
   name: z.string().optional(),
   role: z.string().optional(),
+  provider: z.string().optional(),
   from: z.string().optional(),
   to: z.string().optional()
 });

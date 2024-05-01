@@ -40,6 +40,16 @@ export function UsersTable({ usersPromise }: UsersTableProps) {
         value: role,
         withCount: true
       }))
+    },
+    {
+      label: 'Provider',
+      value: 'provider',
+      options: ['google', 'github', 'credentials'].map((provider) => ({
+        label:
+          provider.charAt(0).toUpperCase() + provider.slice(1).toLowerCase(),
+        value: provider,
+        withCount: true
+      }))
     }
   ];
 

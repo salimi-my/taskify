@@ -101,7 +101,7 @@ export function DataTableSkeleton(props: DataTableSkeletonProps) {
             : null}
         </div>
         {showViewOptions ? (
-          <Skeleton className='ml-auto hidden h-7 w-[4.5rem] lg:flex' />
+          <Skeleton className='ml-auto h-7 w-[4.5rem] flex' />
         ) : null}
       </div>
       <div className='rounded-md border'>

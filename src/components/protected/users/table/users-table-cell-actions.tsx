@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Prisma } from '@prisma/client';
+import type { User } from '@prisma/client';
 import type { Row } from '@tanstack/react-table';
 import {
   TrashIcon,
@@ -18,15 +18,9 @@ import {
   DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
 
-type UserWithProvider = Prisma.UserGetPayload<{
-  include: {
-    Account: {
-      select: {
-        provider: true;
-      };
-    };
-  };
-}>;
+type UserWithProvider = User & {
+  provider: String;
+};
 
 interface UsersTableCellActionsProps {
   row: Row<UserWithProvider>;

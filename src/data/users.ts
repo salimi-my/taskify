@@ -1,19 +1,13 @@
 import * as z from 'zod';
-import type { Prisma, UserRole } from '@prisma/client';
+import type { User, UserRole } from '@prisma/client';
 import { unstable_noStore as noStore } from 'next/cache';
 
 import { db } from '@/lib/db';
 import { FilterSchema } from '@/schemas';
 
-type UserWithProvider = Prisma.UserGetPayload<{
-  include: {
-    Account: {
-      select: {
-        provider: true;
-      };
-    };
-  };
-}>;
+type UserWithProvider = User & {
+  provider: String;
+};
 
 interface ReturnData {
   data: UserWithProvider[];
@@ -48,19 +42,17 @@ export async function getUsers(
       | { [key: string]: 'asc' | 'desc' }
       | { [key: string]: { [key: string]: 'asc' | 'desc' } } =
       column &&
-      ['name', 'email', 'Account_provider', 'role', 'createdAt'].includes(
-        column
-      )
-        ? column.split('_').length > 1
+      ['name', 'email', 'provider', 'role', 'createdAt'].includes(column)
+        ? column === 'provider'
           ? order === 'asc'
             ? {
-                [column.split('_')[0]]: {
-                  [column.split('_')[1]]: 'asc'
+                ['Account']: {
+                  [column]: 'asc'
                 }
               }
             : {
-                [column.split('_')[0]]: {
-                  [column.split('_')[1]]: 'desc'
+                ['Account']: {
+                  [column]: 'desc'
                 }
               }
           : order === 'asc'
@@ -68,7 +60,7 @@ export async function getUsers(
           : { [column]: 'desc' }
         : { createdAt: 'desc' };
 
-    const [data, total] = await Promise.all([
+    const [rawData, total] = await Promise.all([
       db.user.findMany({
         skip: offset,
         take: limit,
@@ -127,6 +119,14 @@ export async function getUsers(
     ]);
 
     const pageCount = Math.ceil(total / per_page);
+
+    const data = rawData.map((user) => {
+      const { Account, ...userWithoutAccount } = user;
+      return {
+        ...userWithoutAccount,
+        provider: Account?.provider || 'Credentials'
+      };
+    });
 
     return { data, pageCount };
   } catch {

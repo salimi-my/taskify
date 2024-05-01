@@ -7,8 +7,8 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { type Row } from '@tanstack/react-table';
+import { type User, UserRole } from '@prisma/client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type Prisma, UserRole } from '@prisma/client';
 
 import { EditUserSchema } from '@/schemas';
 import { Input } from '@/components/ui/input';
@@ -40,15 +40,9 @@ import {
   FormDescription
 } from '@/components/ui/form';
 
-type UserWithProvider = Prisma.UserGetPayload<{
-  include: {
-    Account: {
-      select: {
-        provider: true;
-      };
-    };
-  };
-}>;
+type UserWithProvider = User & {
+  provider: String;
+};
 
 interface EditUserDialogProps {
   isOpen: boolean;
@@ -149,7 +143,7 @@ export function EditUserDialog({ isOpen, onClose, user }: EditUserDialogProps) {
                     <Input
                       {...field}
                       placeholder='Enter email'
-                      disabled={isPending || !!user.original.Account?.provider}
+                      disabled={isPending || !!user.original.provider}
                     />
                   </FormControl>
                   <FormMessage />
@@ -199,7 +193,7 @@ export function EditUserDialog({ isOpen, onClose, user }: EditUserDialogProps) {
                       {...field}
                       placeholder='••••••••'
                       autoComplete='new-password'
-                      disabled={isPending || !!user.original.Account?.provider}
+                      disabled={isPending || !!user.original.provider}
                     />
                   </FormControl>
                   <FormMessage />
@@ -220,7 +214,7 @@ export function EditUserDialog({ isOpen, onClose, user }: EditUserDialogProps) {
                   </div>
                   <FormControl>
                     <Switch
-                      disabled={isPending || !!user.original.Account?.provider}
+                      disabled={isPending || !!user.original.provider}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
@@ -242,7 +236,7 @@ export function EditUserDialog({ isOpen, onClose, user }: EditUserDialogProps) {
                   </div>
                   <FormControl>
                     <Switch
-                      disabled={isPending || !!user.original.Account?.provider}
+                      disabled={isPending || !!user.original.provider}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />

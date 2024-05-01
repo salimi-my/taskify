@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useMemo } from 'react';
-import { type Prisma, UserRole } from '@prisma/client';
+import { type User, UserRole } from '@prisma/client';
 
 import { getUsers } from '@/data/users';
 import { DataTableFilterField } from '@/types';
@@ -11,15 +11,9 @@ import { DataTableToolbar } from '@/components/data-table/data-table-toolbar';
 import { getColumns } from '@/components/protected/users/table/users-table-columns';
 import { UsersTableToolbarActions } from '@/components/protected/users/table/users-table-toolbar-actions';
 
-type UserWithProvider = Prisma.UserGetPayload<{
-  include: {
-    Account: {
-      select: {
-        provider: true;
-      };
-    };
-  };
-}>;
+type UserWithProvider = User & {
+  provider: String;
+};
 
 interface UsersTableProps {
   usersPromise: ReturnType<typeof getUsers>;

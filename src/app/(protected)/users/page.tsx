@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 
-import { FilterSchema } from '@/schemas';
 import type { SearchParams } from '@/types';
+import { UserFilterSchema } from '@/schemas';
 import { Table } from '@/components/protected/users/table/table';
 import { DataTableCard } from '@/components/protected/data-table-card';
 import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton';
@@ -11,7 +11,7 @@ export interface UsersPageProps {
 }
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
-  const search = FilterSchema.parse(searchParams);
+  const search = UserFilterSchema.parse(searchParams);
 
   return (
     <DataTableCard title='Users' description="Here's the list of all users.">

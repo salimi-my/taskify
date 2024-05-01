@@ -1,6 +1,6 @@
 import { SearchParams } from '@/types';
 import { getUsers } from '@/data/users';
-import { FilterSchema } from '@/schemas';
+import { UserFilterSchema } from '@/schemas';
 import { UsersTable } from '@/components/protected/users/table/users-table';
 
 export interface TableProps {
@@ -8,7 +8,7 @@ export interface TableProps {
 }
 
 export function Table({ searchParams }: TableProps) {
-  const search = FilterSchema.parse(searchParams);
+  const search = UserFilterSchema.parse(searchParams);
 
   const usersPromise = getUsers(search);
 

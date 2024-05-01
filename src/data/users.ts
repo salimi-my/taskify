@@ -3,7 +3,7 @@ import type { User, UserRole } from '@prisma/client';
 import { unstable_noStore as noStore } from 'next/cache';
 
 import { db } from '@/lib/db';
-import { FilterSchema } from '@/schemas';
+import { UserFilterSchema } from '@/schemas';
 
 type UserWithProvider = User & {
   provider: String;
@@ -15,7 +15,7 @@ interface ReturnData {
 }
 
 export async function getUsers(
-  filters: z.infer<typeof FilterSchema>
+  filters: z.infer<typeof UserFilterSchema>
 ): Promise<ReturnData> {
   noStore();
   const { page, per_page, sort, name, role, from, to } = filters;

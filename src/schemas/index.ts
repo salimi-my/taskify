@@ -44,6 +44,7 @@ export const ResetPasswordSchema = z
   });
 
 export const EditProfileSchema = z.object({
+  id: z.string().min(1, { message: 'ID is required.' }),
   name: z.string().min(1, {
     message: 'Name is required.'
   }),

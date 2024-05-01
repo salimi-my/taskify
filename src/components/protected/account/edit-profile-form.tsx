@@ -44,6 +44,7 @@ export function EditProfileForm() {
   const form = useForm<z.infer<typeof EditProfileSchema>>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
+      id: user?.id || '',
       name: user?.name || '',
       email: user?.tempEmail ? user.tempEmail : user?.email ? user.email : '',
       role: user?.role || 'USER',
@@ -104,6 +105,20 @@ export function EditProfileForm() {
       <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
+          name='id'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>ID</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder='Enter ID' disabled />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name='name'
           render={({ field }) => (
             <FormItem>
@@ -120,42 +135,40 @@ export function EditProfileForm() {
           )}
         />
 
-        {user?.isOAuth === false && (
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <div className='flex gap-2'>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder='Enter your email'
-                      disabled={isPending || !!user.tempEmail}
-                    />
-                  </FormControl>
-                  {!!user.tempEmail && (
-                    <Button
-                      type='button'
-                      onClick={onCancelEmailUpdate}
-                      disabled={isPending}
-                    >
-                      Cancel
-                    </Button>
-                  )}
-                </div>
-                {!!user.tempEmail && (
-                  <FormDescription>
-                    Please verify your new email address or cancel to use old
-                    email address
-                  </FormDescription>
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <div className='flex gap-2'>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder='Enter your email'
+                    disabled={isPending || !!user?.tempEmail || !!user?.isOAuth}
+                  />
+                </FormControl>
+                {!!user?.tempEmail && (
+                  <Button
+                    type='button'
+                    onClick={onCancelEmailUpdate}
+                    disabled={isPending || !!user?.isOAuth}
+                  >
+                    Cancel
+                  </Button>
                 )}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+              </div>
+              {!!user?.tempEmail && (
+                <FormDescription>
+                  Please verify your new email address or cancel to use old
+                  email address
+                </FormDescription>
+              )}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <FormField
           control={form.control}

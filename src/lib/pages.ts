@@ -30,9 +30,9 @@ export function getPages(pathname: string) {
       ]
     },
     {
-      href: '/users',
+      href: '/users?page=1&sort=createdAt.desc',
       label: 'Users',
-      active: pathname === '/users',
+      active: pathname.includes('/users'),
       icon: Users,
       menu: true,
       submenus: []

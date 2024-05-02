@@ -7,7 +7,6 @@ export function getPages(pathname: string) {
       label: 'Dashboard',
       active: pathname === '/dashboard',
       icon: LayoutGrid,
-      menu: true,
       submenus: []
     },
     {
@@ -15,7 +14,6 @@ export function getPages(pathname: string) {
       label: 'Tasks',
       active: pathname.includes('/tasks'),
       icon: SquareCheck,
-      menu: true,
       submenus: [
         {
           href: '/tasks',
@@ -23,9 +21,9 @@ export function getPages(pathname: string) {
           active: pathname === '/tasks'
         },
         {
-          href: '/projects/new',
+          href: '/tasks/new',
           label: 'New Task',
-          active: pathname === '/projects/new'
+          active: pathname === '/tasks/new'
         }
       ]
     },
@@ -34,7 +32,6 @@ export function getPages(pathname: string) {
       label: 'Users',
       active: pathname.includes('/users'),
       icon: Users,
-      menu: true,
       submenus: []
     },
     {
@@ -42,7 +39,6 @@ export function getPages(pathname: string) {
       label: 'Account',
       active: pathname === '/account',
       icon: UserCog,
-      menu: true,
       submenus: []
     }
   ];

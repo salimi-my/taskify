@@ -27,51 +27,49 @@ export function Menu({ isOpen }: MenuProps) {
   return (
     <nav className='mt-8 h-full'>
       <ul className='flex flex-col h-full items-start space-y-1 px-2'>
-        {pages
-          .filter((page) => page.menu !== false)
-          .map(({ href, label, icon: Icon, active, submenus }, index) =>
-            submenus.length === 0 ? (
-              <li className='w-full' key={index}>
-                <TooltipProvider disableHoverableContent>
-                  <Tooltip delayDuration={100}>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={active ? 'secondary' : 'ghost'}
-                        className='w-full justify-start h-10'
-                        asChild
-                      >
-                        <Link href={href}>
-                          <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                            <Icon size={18} />
-                          </span>
-                          <p
-                            className={cn(
-                              'whitespace-nowrap',
-                              isOpen === false ? 'opacity-0' : 'opacity-100'
-                            )}
-                          >
-                            {label}
-                          </p>
-                        </Link>
-                      </Button>
-                    </TooltipTrigger>
-                    {isOpen === false && (
-                      <TooltipContent side='right'>{label}</TooltipContent>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
-              </li>
-            ) : (
-              <CollapseMenuButton
-                key={index}
-                icon={Icon}
-                label={label}
-                active={active}
-                submenus={submenus}
-                isOpen={isOpen}
-              />
-            )
-          )}
+        {pages.map(({ href, label, icon: Icon, active, submenus }, index) =>
+          submenus.length === 0 ? (
+            <li className='w-full' key={index}>
+              <TooltipProvider disableHoverableContent>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={active ? 'secondary' : 'ghost'}
+                      className='w-full justify-start h-10'
+                      asChild
+                    >
+                      <Link href={href}>
+                        <span className={cn(isOpen === false ? '' : 'mr-4')}>
+                          <Icon size={18} />
+                        </span>
+                        <p
+                          className={cn(
+                            'whitespace-nowrap',
+                            isOpen === false ? 'opacity-0' : 'opacity-100'
+                          )}
+                        >
+                          {label}
+                        </p>
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  {isOpen === false && (
+                    <TooltipContent side='right'>{label}</TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
+            </li>
+          ) : (
+            <CollapseMenuButton
+              key={index}
+              icon={Icon}
+              label={label}
+              active={active}
+              submenus={submenus}
+              isOpen={isOpen}
+            />
+          )
+        )}
         <li className='w-full grow flex items-end'>
           <TooltipProvider disableHoverableContent>
             <Tooltip delayDuration={100}>

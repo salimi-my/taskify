@@ -22,7 +22,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
             columnCount={5}
             searchableColumnCount={1}
             filterableColumnCount={2}
-            cellWidths={['10rem', '35rem', '12rem', '12rem', '8rem']}
+            cellWidths={['15rem', '25rem', '10rem', '10rem', '8rem']}
             shrinkZero
           />
         }

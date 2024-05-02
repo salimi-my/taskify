@@ -15,32 +15,8 @@ type UserWithProvider = User & {
   provider: String;
 };
 
-export function getColumns(): ColumnDef<UserWithProvider>[] {
-  return [
-    {
-      id: 'select',
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && 'indeterminate')
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label='Select all'
-          className='translate-y-0.5'
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label='Select row'
-          className='translate-y-0.5'
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false
-    },
+export function getColumns(role?: UserRole): ColumnDef<UserWithProvider>[] {
+  const commonColumns: ColumnDef<UserWithProvider>[] = [
     {
       accessorKey: 'name',
       header: ({ column }) => (
@@ -108,10 +84,44 @@ export function getColumns(): ColumnDef<UserWithProvider>[] {
         <DataTableColumnHeader column={column} title='Created At' />
       ),
       cell: ({ cell }) => formatDate(cell.getValue() as Date)
-    },
-    {
-      id: 'actions',
-      cell: ({ row }) => <UsersTableCellActions row={row} />
     }
   ];
+
+  if (role === UserRole.ADMIN) {
+    return [
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label='Select all'
+            className='translate-y-0.5'
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label='Select row'
+            className='translate-y-0.5'
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false
+      },
+      ...commonColumns,
+      {
+        id: 'actions',
+        cell: ({ row }) => <UsersTableCellActions row={row} />
+      }
+    ];
+  } else {
+    return commonColumns;
+  }
 }

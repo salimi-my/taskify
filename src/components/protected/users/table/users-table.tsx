@@ -6,6 +6,7 @@ import { type User, UserRole } from '@prisma/client';
 import { getUsers } from '@/data/users';
 import { DataTableFilterField } from '@/types';
 import { useDataTable } from '@/hooks/use-data-table';
+import { useCurrentRole } from '@/hooks/use-current-role';
 import { DataTable } from '@/components/data-table/data-table';
 import { DataTableToolbar } from '@/components/data-table/data-table-toolbar';
 import { getColumns } from '@/components/protected/users/table/users-table-columns';
@@ -20,10 +21,11 @@ interface UsersTableProps {
 }
 
 export function UsersTable({ usersPromise }: UsersTableProps) {
+  const role = useCurrentRole();
   const { data, pageCount } = use(usersPromise);
 
   // Memoize the columns so they don't re-render on every render
-  const columns = useMemo(() => getColumns(), []);
+  const columns = useMemo(() => getColumns(role), [role]);
 
   // Render either a faceted filter or a search filter based on the `options` prop
   const filterFields: DataTableFilterField<UserWithProvider>[] = [
@@ -65,7 +67,7 @@ export function UsersTable({ usersPromise }: UsersTableProps) {
   return (
     <div className='w-full space-y-2.5 overflow-auto'>
       <DataTableToolbar table={table} filterFields={filterFields}>
-        <UsersTableToolbarActions table={table} />
+        {role === UserRole.ADMIN && <UsersTableToolbarActions table={table} />}
       </DataTableToolbar>
       <DataTable table={table} />
     </div>

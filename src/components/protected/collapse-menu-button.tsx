@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Dot, LucideIcon } from 'lucide-react';
+import { ChevronDown, Dot, LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -57,7 +57,10 @@ export function CollapseMenuButton({
       onOpenChange={setIsCollapsed}
       className='w-full'
     >
-      <CollapsibleTrigger asChild>
+      <CollapsibleTrigger
+        className='[&[data-state=open]>div>div>svg]:rotate-180 mb-1'
+        asChild
+      >
         <Button
           variant={active ? 'secondary' : 'ghost'}
           className='w-full justify-start h-10'
@@ -69,8 +72,10 @@ export function CollapseMenuButton({
               </span>
               <p
                 className={cn(
-                  'whitespace-nowrap',
-                  isOpen ? 'opacity-100' : 'opacity-0'
+                  'max-w-[150px] truncate',
+                  isOpen
+                    ? 'translate-x-0 opacity-100'
+                    : '-translate-x-96 opacity-0'
                 )}
               >
                 {label}
@@ -79,34 +84,37 @@ export function CollapseMenuButton({
             <div
               className={cn(
                 'whitespace-nowrap',
-                isOpen ? 'opacity-100' : 'opacity-0'
+                isOpen
+                  ? 'translate-x-0 opacity-100'
+                  : '-translate-x-96 opacity-0'
               )}
             >
-              {isCollapsed ? (
-                <ChevronUp size={18} />
-              ) : (
-                <ChevronDown size={18} />
-              )}
+              <ChevronDown
+                size={18}
+                className='transition-transform duration-200'
+              />
             </div>
           </div>
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent>
+      <CollapsibleContent className='overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down'>
         {submenus.map(({ href, label, active }, index) => (
           <Button
             key={index}
             variant={active ? 'secondary' : 'ghost'}
-            className='w-full justify-start h-10'
+            className='w-full justify-start h-10 mb-1'
             asChild
           >
             <Link href={href}>
-              <span className='mr-4'>
+              <span className='mr-4 ml-2'>
                 <Dot size={18} />
               </span>
               <p
                 className={cn(
-                  'whitespace-nowrap',
-                  isOpen ? 'opacity-100' : 'opacity-0'
+                  'max-w-[170px] truncate',
+                  isOpen
+                    ? 'translate-x-0 opacity-100'
+                    : '-translate-x-96 opacity-0'
                 )}
               >
                 {label}
@@ -124,7 +132,7 @@ export function CollapseMenuButton({
             <DropdownMenuTrigger asChild>
               <Button
                 variant={active ? 'secondary' : 'ghost'}
-                className='w-full justify-start h-10'
+                className='w-full justify-start h-10 mb-1'
               >
                 <div className='w-full items-center flex justify-between'>
                   <div className='flex items-center'>
@@ -133,24 +141,12 @@ export function CollapseMenuButton({
                     </span>
                     <p
                       className={cn(
-                        'whitespace-nowrap',
+                        'max-w-[200px] truncate',
                         isOpen === false ? 'opacity-0' : 'opacity-100'
                       )}
                     >
                       {label}
                     </p>
-                  </div>
-                  <div
-                    className={cn(
-                      'whitespace-nowrap',
-                      isOpen ? 'opacity-100' : 'opacity-0'
-                    )}
-                  >
-                    {isCollapsed ? (
-                      <ChevronUp size={18} />
-                    ) : (
-                      <ChevronDown size={18} />
-                    )}
                   </div>
                 </div>
               </Button>
@@ -162,12 +158,14 @@ export function CollapseMenuButton({
         </Tooltip>
       </TooltipProvider>
       <DropdownMenuContent side='right' sideOffset={25} align='start'>
-        <DropdownMenuLabel>{label}</DropdownMenuLabel>
+        <DropdownMenuLabel className='max-w-[190px] truncate'>
+          {label}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {submenus.map(({ href, label, active }, index) => (
+        {submenus.map(({ href, label }, index) => (
           <DropdownMenuItem key={index} asChild>
             <Link className='cursor-pointer' href={href}>
-              {label}
+              <p className='max-w-[180px] truncate'>{label}</p>
             </Link>
           </DropdownMenuItem>
         ))}

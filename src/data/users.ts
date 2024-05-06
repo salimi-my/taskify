@@ -51,23 +51,23 @@ export async function getUsers(
 
       if (providerList.length === 0) {
         andClause.push({
-          Account: null
+          account: null
         });
       } else {
         const providerFilter = {
-          Account: {
+          account: {
             provider: {
               in: providerList
             }
           }
         };
 
-        if (provider === 'credentials') {
-          andClause.push(providerFilter);
-        } else {
+        if (provider.split('.').includes('credentials')) {
           andClause.push({
-            OR: [{ Account: null }, providerFilter]
+            OR: [{ account: null }, providerFilter]
           });
+        } else {
+          andClause.push(providerFilter);
         }
       }
     }
@@ -81,12 +81,12 @@ export async function getUsers(
         ? column === 'provider'
           ? order === 'asc'
             ? {
-                ['Account']: {
+                ['account']: {
                   [column]: 'asc'
                 }
               }
             : {
-                ['Account']: {
+                ['account']: {
                   [column]: 'desc'
                 }
               }
@@ -100,7 +100,7 @@ export async function getUsers(
         skip: offset,
         take: limit,
         include: {
-          Account: {
+          account: {
             select: {
               provider: true
             }
@@ -136,10 +136,10 @@ export async function getUsers(
     const pageCount = Math.ceil(total / per_page);
 
     const data = rawData.map((user) => {
-      const { Account, ...userWithoutAccount } = user;
+      const { account, ...userWithoutAccount } = user;
       return {
         ...userWithoutAccount,
-        provider: Account?.provider || 'credentials'
+        provider: account?.provider || 'credentials'
       };
     });
 

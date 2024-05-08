@@ -2,9 +2,9 @@
 
 import { cn } from '@/lib/utils';
 import { useStore } from '@/hooks/use-store';
-import { Footer } from '@/components/protected/footer';
-import { Navbar } from '@/components/protected/navbar';
-import { Sidebar } from '@/components/protected/sidebar';
+import { Footer } from '@/components/admin-panel/footer';
+import { Navbar } from '@/components/admin-panel/navbar';
+import { Sidebar } from '@/components/admin-panel/sidebar';
 import { useSidebarToggle } from '@/hooks/use-sidebar-toggle';
 
 export default function ProtectedLayout({

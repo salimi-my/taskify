@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils';
 import Logo from '@public/taskify-logo.png';
 import { useStore } from '@/hooks/use-store';
 import { Button } from '@/components/ui/button';
-import { Menu } from '@/components/protected/menu';
+import { Menu } from '@/components/admin-panel/menu';
 import { useSidebarToggle } from '@/hooks/use-sidebar-toggle';
-import { SidebarToggle } from '@/components/protected/sidebar-toggle';
+import { SidebarToggle } from '@/components/admin-panel/sidebar-toggle';
 
 export function Sidebar() {
   const sidebar = useStore(useSidebarToggle, (state) => state);

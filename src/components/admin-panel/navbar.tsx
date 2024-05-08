@@ -1,7 +1,7 @@
 import { ModeToggle } from '@/components/mode-toggle';
-import { UserNav } from '@/components/protected/user-nav';
-import { PageTitle } from '@/components/protected/page-title';
-import { SheetMenu } from '@/components/protected/sheet-menu';
+import { UserNav } from '@/components/admin-panel/user-nav';
+import { PageTitle } from '@/components/admin-panel/page-title';
+import { SheetMenu } from '@/components/admin-panel/sheet-menu';
 
 export function Navbar() {
   return (

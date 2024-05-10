@@ -1,4 +1,10 @@
-import { Users, Settings, LayoutGrid, SquareCheck } from 'lucide-react';
+import {
+  Users,
+  Settings,
+  LayoutGrid,
+  FolderOpen,
+  SquareCheck
+} from 'lucide-react';
 
 type Submenu = {
   href: string;
@@ -36,6 +42,24 @@ export function getPages(pathname: string): Group[] {
     {
       groupLabel: 'Contents',
       menus: [
+        {
+          href: '',
+          label: 'Projects',
+          active: pathname.includes('/projects'),
+          icon: FolderOpen,
+          submenus: [
+            {
+              href: '/projects?page=1&sort=createdAt.desc',
+              label: 'All Projects',
+              active: pathname === '/projects'
+            },
+            {
+              href: '/projects/new',
+              label: 'New Project',
+              active: pathname === '/projects/new'
+            }
+          ]
+        },
         {
           href: '',
           label: 'Tasks',

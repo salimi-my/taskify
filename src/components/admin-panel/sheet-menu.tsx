@@ -1,6 +1,8 @@
 import Link from 'next/link';
-import { MenuIcon, PanelsTopLeft } from 'lucide-react';
+import Image from 'next/image';
+import { MenuIcon } from 'lucide-react';
 
+import Logo from '@public/taskify-logo.png';
 import { Button } from '@/components/ui/button';
 import { Menu } from '@/components/admin-panel/menu';
 import {
@@ -26,8 +28,14 @@ export function SheetMenu() {
             asChild
           >
             <Link href='/dashboard' className='flex items-center gap-2'>
-              <PanelsTopLeft className='w-6 h-6 mr-1' />
-              <h1 className='font-bold text-lg'>Brand</h1>
+              <Image
+                src={Logo}
+                placeholder='blur'
+                priority
+                alt='Taskify Logo'
+                className='w-7 h-7'
+              />
+              <h1 className='font-bold text-lg'>Taskify</h1>
             </Link>
           </Button>
         </SheetHeader>

@@ -10,7 +10,6 @@ type Submenu = {
   href: string;
   label: string;
   active: boolean;
-  onlyTitle?: boolean;
 };
 
 type Menu = {
@@ -26,7 +25,7 @@ type Group = {
   menus: Menu[];
 };
 
-export function getPages(pathname: string): Group[] {
+export function getMenuList(pathname: string): Group[] {
   return [
     {
       groupLabel: '',
@@ -44,22 +43,11 @@ export function getPages(pathname: string): Group[] {
       groupLabel: 'Contents',
       menus: [
         {
-          href: '',
+          href: '/projects?page=1&sort=createdAt.desc',
           label: 'Projects',
           active: pathname.includes('/projects'),
           icon: FolderOpen,
-          submenus: [
-            {
-              href: '/projects?page=1&sort=createdAt.desc',
-              label: 'All Projects',
-              active: pathname === '/projects'
-            },
-            {
-              href: '/projects/new',
-              label: 'New Project',
-              active: pathname === '/projects/new'
-            }
-          ]
+          submenus: []
         },
         {
           href: '',
@@ -73,9 +61,9 @@ export function getPages(pathname: string): Group[] {
               active: pathname === '/tasks'
             },
             {
-              href: '/tasks/new',
+              href: '/tasks/create',
               label: 'New Task',
-              active: pathname === '/tasks/new'
+              active: pathname === '/tasks/create'
             }
           ]
         }

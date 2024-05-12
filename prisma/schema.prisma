@@ -27,6 +27,11 @@ model User {
   twoFactorConfirmation   TwoFactorConfirmation?
   sessions                Session[]
   account                 Account?
+  projectsAssignedToMe    UsersOnProjects[]
+  tasks                   Task[]
+  actions                 TaskAction[]            @relation("TaskActionUser")
+  actionsAssignedToMe     TaskAction[]            @relation("TaskActionAssignee")
+  tasksAssignedToMe       UsersOnTasks[]
 
   createdAt               DateTime                @default(now())
   updatedAt               DateTime                @updatedAt
@@ -101,4 +106,112 @@ model TwoFactorConfirmation {
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model Project {
+  id            String    @id @default(cuid())
+  name          String
+  description   String
+  tasks         Task[]
+  users         UsersOnProjects[]
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model UsersOnProjects {
+  project    Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId  String
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  assignedAt DateTime     @default(now())
+  assignedBy String
+
+  @@id([projectId, userId])
+  @@index([userId])
+}
+
+enum TaskLabel {
+  BUG
+  FEATURE
+  ENHANCEMENT
+}
+
+enum TaskStatus {
+  OPEN
+  TODO
+  IN_PROGRESS
+  CLOSED
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum TaskActionType {
+  COMMENT
+  ADD_ASSIGNEE
+  REMOVE_ASSIGNEE
+  ADD_LABEL
+  REMOVE_LABEL
+  ADD_PROJECT
+  REMOVE_PROJECT
+  OPEN
+  CLOSE
+  CANCEL
+}
+
+model Task {
+  id         String           @id @default(cuid())
+  userId     String           @unique
+  projectId  String?
+  title      String
+  body       String           @db.Text
+  label      TaskLabel
+  status     TaskStatus
+  priority   TaskPriority
+  actions    TaskAction[]
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project    Project?         @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  assignees  UsersOnTasks[]
+
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([projectId])
+}
+
+model TaskAction {
+  id          String          @id @default(cuid())
+  taskId      String          @unique
+  userId      String          @unique
+  comment     String?         @db.Text
+  type        TaskActionType  @default(COMMENT)
+  assigneeId  String?
+  assignee    User?           @relation("TaskActionAssignee", fields: [assigneeId], references: [id])
+  
+  task        Task            @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user        User            @relation("TaskActionUser", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([taskId, userId])
+  @@index([assigneeId])
+}
+
+model UsersOnTasks {
+  task    Task          @relation(fields: [taskId], references: [id])
+  taskId  String
+  user    User          @relation(fields: [userId], references: [id])
+  userId  String
+  assignedAt DateTime   @default(now())
+  assignedBy String
+
+  @@id([taskId, userId])
+  @@index([userId])
 }

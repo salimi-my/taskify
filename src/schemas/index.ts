@@ -113,3 +113,12 @@ export const EditUserSchema = z.object({
   isForceNewPassword: z.boolean(),
   isEmailVerified: z.boolean()
 });
+
+export const ProjectFilterSchema = z.object({
+  page: z.coerce.number().default(1),
+  per_page: z.coerce.number().default(10),
+  sort: z.string().optional(),
+  name: z.string().optional(),
+  from: z.string().optional(),
+  to: z.string().optional()
+});

@@ -39,9 +39,7 @@ export async function getProjects(
     const toDay = to ? new Date(to) : undefined;
 
     // Define orderBy
-    const orderBy:
-      | { [key: string]: 'asc' | 'desc' }
-      | { [key: string]: { [key: string]: 'asc' | 'desc' } } =
+    const orderBy: { [key: string]: 'asc' | 'desc' } =
       column && ['name', 'description', 'createdAt'].includes(column)
         ? order === 'asc'
           ? { [column]: 'asc' }
@@ -65,18 +63,21 @@ export async function getProjects(
             gte: fromDay,
             lte: toDay
           },
-          OR: [
-            {
-              name: {
-                contains: name
-              }
-            },
-            {
-              description: {
-                contains: name
-              }
-            }
-          ]
+          OR:
+            typeof name === 'string'
+              ? [
+                  {
+                    name: {
+                      contains: name
+                    }
+                  },
+                  {
+                    description: {
+                      contains: name
+                    }
+                  }
+                ]
+              : undefined
         },
         orderBy
       }),
@@ -86,18 +87,21 @@ export async function getProjects(
             gte: fromDay,
             lte: toDay
           },
-          OR: [
-            {
-              name: {
-                contains: name
-              }
-            },
-            {
-              description: {
-                contains: name
-              }
-            }
-          ]
+          OR:
+            typeof name === 'string'
+              ? [
+                  {
+                    name: {
+                      contains: name
+                    }
+                  },
+                  {
+                    description: {
+                      contains: name
+                    }
+                  }
+                ]
+              : undefined
         }
       })
     ]);

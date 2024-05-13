@@ -6,8 +6,8 @@ import type { Table } from '@tanstack/react-table';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import { CreateUserDialog } from '@/components/protected/users/table/create-user-dialog';
 import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
+import { CreateProjectDialog } from '@/components/protected/projects/table/create-project-dialog';
 
 type ProjectWithCount = Project & {
   tasksCount: number;
@@ -54,7 +54,10 @@ export function ProjectsTableToolbarActions({
           <PlusIcon className='mr-2 size-4' aria-hidden='true' />
           New project
         </Button>
-        {/* Create project dialog */}
+        <CreateProjectDialog
+          isOpen={isCreateOpen}
+          onClose={() => setIsCreateOpen(false)}
+        />
       </>
     </div>
   );

@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { CreateProjectSchema } from '@/schemas';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { createProject } from '@/actions/projects/create-project';
 import {
   Dialog,
   DialogTitle,
@@ -50,7 +51,19 @@ export function CreateProjectDialog({
 
   const onSubmit = (values: z.infer<typeof CreateProjectSchema>) => {
     startTransition(() => {
-      // TODO: Create project server action
+      createProject(values)
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            onClose();
+            toast.success(data.success);
+            router.refresh();
+          }
+        })
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
     });
   };
 

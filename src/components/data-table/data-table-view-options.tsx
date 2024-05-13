@@ -27,7 +27,7 @@ export function DataTableViewOptions<TData>({
           aria-label='Toggle columns'
           variant='outline'
           size='sm'
-          className='ml-auto h-8 flex'
+          className='ml-auto h-8 flex focus-within:outline-none ring-inset focus-within:ring-1 focus-within:ring-ring'
         >
           <MixerHorizontalIcon className='mr-2 size-4' />
           View

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Cross2Icon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import type { Table } from '@tanstack/react-table';
+import { Cross2Icon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';

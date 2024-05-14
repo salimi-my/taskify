@@ -6,13 +6,14 @@ import { useTransition } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import type { Project } from '@prisma/client';
+import { type Project } from '@prisma/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@/components/ui/input';
 import { EditProjectSchema } from '@/schemas';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { editProject } from '@/actions/projects/edit-project';
 import {
   Form,
   FormItem,
@@ -33,6 +34,7 @@ export function EditProjectForm({ project }: EditProjectFormProps) {
   const form = useForm<z.infer<typeof EditProjectSchema>>({
     resolver: zodResolver(EditProjectSchema),
     defaultValues: {
+      id: project?.id || '',
       name: project?.name || '',
       description: project?.description || ''
     }
@@ -40,7 +42,17 @@ export function EditProjectForm({ project }: EditProjectFormProps) {
 
   const onSubmit = (values: z.infer<typeof EditProjectSchema>) => {
     startTransition(() => {
-      // TODO: Add edit project server action
+      editProject(values)
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+          if (data.success) {
+            toast.success(data.success);
+            router.refresh();
+          }
+        })
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
     });
   };
 

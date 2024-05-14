@@ -122,3 +122,17 @@ export async function getProjects(
     return { data: [], pageCount: 0 };
   }
 }
+
+export async function getProjectById(id: string) {
+  try {
+    const project = await db.project.findUnique({
+      where: {
+        id
+      }
+    });
+
+    return project;
+  } catch {
+    return null;
+  }
+}

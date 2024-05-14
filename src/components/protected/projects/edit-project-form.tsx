@@ -6,6 +6,7 @@ import { useTransition } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import type { Project } from '@prisma/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Input } from '@/components/ui/input';
@@ -21,15 +22,19 @@ import {
   FormMessage
 } from '@/components/ui/form';
 
-export function EditProjectForm() {
+interface EditProjectFormProps {
+  project: Project | null;
+}
+
+export function EditProjectForm({ project }: EditProjectFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof EditProjectSchema>>({
     resolver: zodResolver(EditProjectSchema),
     defaultValues: {
-      name: '',
-      description: ''
+      name: project?.name || '',
+      description: project?.description || ''
     }
   });
 

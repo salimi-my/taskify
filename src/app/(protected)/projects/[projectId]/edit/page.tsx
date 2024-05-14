@@ -1,3 +1,4 @@
+import { getProjectById } from '@/data/projects';
 import { ContentLayout } from '@/components/admin-panel/content-layout';
 import { EditProjectForm } from '@/components/protected/projects/edit-project-form';
 import {
@@ -8,7 +9,13 @@ import {
   CardDescription
 } from '@/components/ui/card';
 
-export default function EditProjectPage() {
+export default async function EditProjectPage({
+  params
+}: {
+  params: { projectId: string };
+}) {
+  const project = await getProjectById(params.projectId);
+
   return (
     <ContentLayout title='Edit Project'>
       <div className='grid lg:grid-cols-5 gap-4'>
@@ -22,7 +29,7 @@ export default function EditProjectPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <EditProjectForm />
+            <EditProjectForm project={project} />
           </CardContent>
         </Card>
         <Card className='rounded-lg border-none col-span-3'>

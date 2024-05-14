@@ -1,4 +1,5 @@
 import { ContentLayout } from '@/components/admin-panel/content-layout';
+import { EditProjectForm } from '@/components/protected/projects/edit-project-form';
 import {
   Card,
   CardTitle,
@@ -20,7 +21,9 @@ export default function EditProjectPage() {
               Update project details & informations.
             </CardDescription>
           </CardHeader>
-          <CardContent>EditProjectForm</CardContent>
+          <CardContent>
+            <EditProjectForm />
+          </CardContent>
         </Card>
         <Card className='rounded-lg border-none col-span-3'>
           <CardHeader className='mx-[1px] pb-9'>

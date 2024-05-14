@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 import type { Project } from '@prisma/client';
 import type { Row } from '@tanstack/react-table';
@@ -8,7 +9,6 @@ import {
 } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import { EditUserDialog } from '@/components/protected/users/table/edit-user-dialog';
 import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
 import {
   DropdownMenu,
@@ -30,13 +30,11 @@ interface ProjectsTableCellActionsProps {
 export function ProjectsTableCellActions({
   row
 }: ProjectsTableCellActionsProps) {
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   return (
     <>
       {/* Delete project dialog */}
-      {/* Edit project dialog */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -48,9 +46,11 @@ export function ProjectsTableCellActions({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-40'>
-          <DropdownMenuItem onSelect={() => setIsEditDialogOpen(true)}>
-            <Pencil2Icon className='mr-2 size-4' aria-hidden='true' />
-            Edit
+          <DropdownMenuItem asChild>
+            <Link href={`/projects/${row.original.id}/edit`}>
+              <Pencil2Icon className='mr-2 size-4' aria-hidden='true' />
+              Edit
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

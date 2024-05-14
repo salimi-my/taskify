@@ -120,9 +120,9 @@ model Project {
 }
 
 model UsersOnProjects {
-  project    Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project    Project      @relation(fields: [projectId], references: [id])
   projectId  String
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User         @relation(fields: [userId], references: [id])
   userId     String
   assignedAt DateTime     @default(now())
   assignedBy String

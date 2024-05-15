@@ -148,3 +148,13 @@ export async function getUsers(
     return { data: [], pageCount: 0 };
   }
 }
+
+export async function getAllUsers() {
+  try {
+    const users = await db.user.findMany();
+
+    return users;
+  } catch {
+    return null;
+  }
+}

@@ -133,3 +133,8 @@ export const EditProjectSchema = z.object({
   name: z.string().min(1, { message: 'Name is required.' }),
   description: z.string().min(1, { message: 'Description is required.' })
 });
+
+export const AssignProjectUserSchema = z.object({
+  projectId: z.string().min(1, { message: 'Project ID is required.' }),
+  userId: z.string().min(1, { message: 'User is required.' })
+});

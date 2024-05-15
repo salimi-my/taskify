@@ -1,5 +1,7 @@
+import { getAllUsers } from '@/data/users';
 import { getProjectById } from '@/data/projects';
 import { ContentLayout } from '@/components/admin-panel/content-layout';
+import { ProjectUsers } from '@/components/protected/projects/project-users';
 import { EditProjectForm } from '@/components/protected/projects/edit-project-form';
 import {
   Card,
@@ -15,6 +17,7 @@ export default async function EditProjectPage({
   params: { projectId: string };
 }) {
   const project = await getProjectById(params.projectId);
+  const users = await getAllUsers();
 
   return (
     <ContentLayout title='Edit Project'>
@@ -41,7 +44,9 @@ export default async function EditProjectPage({
               Display list of users assigned to this project.
             </CardDescription>
           </CardHeader>
-          <CardContent>UsersProjectAssignedTable</CardContent>
+          <CardContent>
+            <ProjectUsers users={users} />
+          </CardContent>
         </Card>
       </div>
     </ContentLayout>

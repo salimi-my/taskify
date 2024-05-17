@@ -13,6 +13,7 @@ import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { AssignProjectUserSchema } from '@/schemas';
+import { assignUser } from '@/actions/projects/assign-user';
 import {
   Popover,
   PopoverContent,
@@ -43,31 +44,45 @@ import {
 } from '@/components/ui/form';
 
 interface AssignUserDialogProps {
-  users: User[] | null;
   isOpen: boolean;
   onClose: () => void;
+  users: User[] | null;
+  projectId: string | undefined;
 }
 
 export function AssignUserDialog({
   users,
   isOpen,
-  onClose
+  onClose,
+  projectId
 }: AssignUserDialogProps) {
-  console.log(users);
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof AssignProjectUserSchema>>({
     resolver: zodResolver(AssignProjectUserSchema),
     defaultValues: {
-      projectId: '',
+      projectId: projectId || '',
       userId: ''
     }
   });
 
   const onSubmit = (values: z.infer<typeof AssignProjectUserSchema>) => {
     startTransition(() => {
-      // TODO: Create assign project user server action
+      assignUser(values)
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            onClose();
+            form.reset();
+            toast.success(data.success);
+            router.refresh();
+          }
+        })
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
     });
   };
 

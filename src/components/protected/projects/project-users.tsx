@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { PlusIcon } from '@radix-ui/react-icons';
 
+import type { User } from '@prisma/client';
 import { Button } from '@/components/ui/button';
 import { AssignUserDialog } from '@/components/protected/projects/assign-user-dialog';
 import {
@@ -13,13 +14,13 @@ import {
   TableHead,
   TableHeader
 } from '@/components/ui/table';
-import type { User } from '@prisma/client';
 
 interface ProjectUsersProps {
   users: User[] | null;
+  projectId: string | undefined;
 }
 
-export function ProjectUsers({ users }: ProjectUsersProps) {
+export function ProjectUsers({ users, projectId }: ProjectUsersProps) {
   const [isAssignOpen, setIsAssignOpen] = useState(false);
 
   return (
@@ -54,6 +55,7 @@ export function ProjectUsers({ users }: ProjectUsersProps) {
       </div>
       <AssignUserDialog
         users={users}
+        projectId={projectId}
         isOpen={isAssignOpen}
         onClose={() => setIsAssignOpen(false)}
       />

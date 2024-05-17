@@ -45,7 +45,7 @@ export default async function EditProjectPage({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ProjectUsers users={unassignedUser} />
+            <ProjectUsers users={unassignedUser} projectId={project?.id} />
           </CardContent>
         </Card>
       </div>

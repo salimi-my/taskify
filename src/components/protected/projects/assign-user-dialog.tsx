@@ -46,7 +46,7 @@ import {
 interface AssignUserDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  users: User[] | null;
+  users: User[] | undefined;
   projectId: string | undefined;
 }
 

@@ -1,5 +1,5 @@
+import { getAllUsers } from '@/data/users';
 import { getProjectById } from '@/data/projects';
-import { getUnassignedUsers } from '@/data/users';
 import { ContentLayout } from '@/components/admin-panel/content-layout';
 import { ProjectUsers } from '@/components/protected/projects/project-users';
 import { EditProjectForm } from '@/components/protected/projects/edit-project-form';
@@ -16,8 +16,8 @@ export default async function EditProjectPage({
 }: {
   params: { projectId: string };
 }) {
+  const allUsers = await getAllUsers();
   const project = await getProjectById(params.projectId);
-  const unassignedUser = await getUnassignedUsers(project?.id);
 
   return (
     <ContentLayout title='Edit Project'>
@@ -45,7 +45,7 @@ export default async function EditProjectPage({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ProjectUsers users={unassignedUser} projectId={project?.id} />
+            <ProjectUsers allUsers={allUsers} project={project} />
           </CardContent>
         </Card>
       </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { PlusIcon } from '@radix-ui/react-icons';
 
-import type { User } from '@prisma/client';
+import type { Prisma, User } from '@prisma/client';
 import { Button } from '@/components/ui/button';
 import { AssignUserDialog } from '@/components/protected/projects/assign-user-dialog';
 import {
@@ -15,13 +15,25 @@ import {
   TableHeader
 } from '@/components/ui/table';
 
+type ProjectWithUsers = Prisma.ProjectGetPayload<{
+  include: {
+    users: true;
+  };
+}>;
+
 interface ProjectUsersProps {
-  users: User[] | null;
-  projectId: string | undefined;
+  allUsers: User[] | null;
+  project: ProjectWithUsers | null;
 }
 
-export function ProjectUsers({ users, projectId }: ProjectUsersProps) {
+export function ProjectUsers({ allUsers, project }: ProjectUsersProps) {
   const [isAssignOpen, setIsAssignOpen] = useState(false);
+  const assignedUsers = allUsers?.filter((user) =>
+    project?.users.some((u) => u.userId === user.id)
+  );
+  const unassignedUsers = allUsers?.filter(
+    (user) => !project?.users.some((u) => u.userId === user.id)
+  );
 
   return (
     <>
@@ -45,17 +57,19 @@ export function ProjectUsers({ users, projectId }: ProjectUsersProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell>Salimi</TableCell>
-                <TableCell>contact@salimi.my</TableCell>
-              </TableRow>
+              {assignedUsers?.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </div>
       </div>
       <AssignUserDialog
-        users={users}
-        projectId={projectId}
+        users={unassignedUsers}
+        projectId={project?.id}
         isOpen={isAssignOpen}
         onClose={() => setIsAssignOpen(false)}
       />

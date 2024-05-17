@@ -149,19 +149,9 @@ export async function getUsers(
   }
 }
 
-export async function getUnassignedUsers(projectId: string | undefined) {
+export async function getAllUsers() {
   try {
-    const users = await db.user.findMany({
-      where: {
-        NOT: {
-          projectsAssignedToMe: {
-            some: {
-              projectId
-            }
-          }
-        }
-      }
-    });
+    const users = await db.user.findMany();
 
     return users;
   } catch {

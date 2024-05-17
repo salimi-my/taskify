@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { UserIcon } from 'lucide-react';
+import { PlusIcon } from '@radix-ui/react-icons';
 import type { Prisma, User } from '@prisma/client';
-import { TrashIcon, PlusIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AssignUserDialog } from '@/components/protected/projects/assign-user-dialog';
+import { AssignedUserAction } from '@/components/protected/projects/assigned-user-action';
 import {
   Table,
   TableRow,
@@ -16,12 +17,6 @@ import {
   TableHead,
   TableHeader
 } from '@/components/ui/table';
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
 
 type ProjectWithUsers = Prisma.ProjectGetPayload<{
   include: {
@@ -36,7 +31,6 @@ interface ProjectUsersProps {
 
 export function ProjectUsers({ allUsers, project }: ProjectUsersProps) {
   const [isAssignOpen, setIsAssignOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const assignedUsers = allUsers?.filter((user) =>
     project?.users.some((u) => u.userId === user.id)
@@ -85,34 +79,7 @@ export function ProjectUsers({ allUsers, project }: ProjectUsersProps) {
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          aria-label='Open menu'
-                          variant='ghost'
-                          className='flex size-8 p-0 data-[state=open]:bg-muted'
-                        >
-                          <DotsHorizontalIcon
-                            className='size-4'
-                            aria-hidden='true'
-                          />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align='end' className='w-40'>
-                        <DropdownMenuItem
-                          className='group'
-                          onSelect={() => setIsDeleteDialogOpen(true)}
-                        >
-                          <TrashIcon
-                            className='mr-2 size-4 group-hover:text-destructive'
-                            aria-hidden='true'
-                          />
-                          <span className='group-hover:text-destructive'>
-                            Delete
-                          </span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <AssignedUserAction userId={user.id} />
                   </TableCell>
                 </TableRow>
               ))}

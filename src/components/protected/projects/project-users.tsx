@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { UserIcon } from 'lucide-react';
+import type { Prisma, User } from '@prisma/client';
 import { TrashIcon, PlusIcon, DotsHorizontalIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import type { Prisma, User } from '@prisma/client';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { AssignUserDialog } from '@/components/protected/projects/assign-user-dialog';
 import {
   Table,
@@ -67,7 +69,20 @@ export function ProjectUsers({ allUsers, project }: ProjectUsersProps) {
             <TableBody>
               {assignedUsers?.map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell>{user.name}</TableCell>
+                  <TableCell>
+                    <div className='flex space-x-2 items-center'>
+                      <Avatar className='h-8 w-8 border'>
+                        <AvatarImage
+                          src={user.image || ''}
+                          alt={user.name || ''}
+                        />
+                        <AvatarFallback>
+                          <UserIcon className='w-5 h-5 text-muted-foreground' />
+                        </AvatarFallback>
+                      </Avatar>
+                      <p className='max-w-[120px] truncate'>{user.name}</p>
+                    </div>
+                  </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
                     <DropdownMenu>

@@ -126,6 +126,9 @@ export async function getProjects(
 export async function getProjectById(id: string) {
   try {
     const project = await db.project.findUnique({
+      include: {
+        users: true
+      },
       where: {
         id
       }

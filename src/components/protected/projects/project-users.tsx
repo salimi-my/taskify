@@ -61,31 +61,39 @@ export function ProjectUsers({ allUsers, project }: ProjectUsersProps) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {assignedUsers?.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>
-                    <div className='flex space-x-2 items-center'>
-                      <Avatar className='h-8 w-8 border'>
-                        <AvatarImage
-                          src={user.image || ''}
-                          alt={user.name || ''}
-                        />
-                        <AvatarFallback>
-                          <UserIcon className='w-5 h-5 text-muted-foreground' />
-                        </AvatarFallback>
-                      </Avatar>
-                      <p className='max-w-[120px] truncate'>{user.name}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <AssignedUserAction
-                      userId={user.id}
-                      projectId={project?.id}
-                    />
+              {assignedUsers?.length ? (
+                assignedUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>
+                      <div className='flex space-x-2 items-center'>
+                        <Avatar className='h-8 w-8 border'>
+                          <AvatarImage
+                            src={user.image || ''}
+                            alt={user.name || ''}
+                          />
+                          <AvatarFallback>
+                            <UserIcon className='w-5 h-5 text-muted-foreground' />
+                          </AvatarFallback>
+                        </Avatar>
+                        <p className='max-w-[120px] truncate'>{user.name}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>
+                      <AssignedUserAction
+                        userId={user.id}
+                        projectId={project?.id}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={2} className='h-24 text-center'>
+                    No results.
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>

@@ -7,6 +7,7 @@ import { useState, useTransition } from 'react';
 import { DotsHorizontalIcon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
+import { unassignUser } from '@/actions/projects/unassign-user';
 import {
   Dialog,
   DialogClose,
@@ -25,9 +26,13 @@ import {
 
 interface AssignedUserActionProps {
   userId: string;
+  projectId: string | undefined;
 }
 
-export function AssignedUserAction({ userId }: AssignedUserActionProps) {
+export function AssignedUserAction({
+  userId,
+  projectId
+}: AssignedUserActionProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -40,7 +45,19 @@ export function AssignedUserAction({ userId }: AssignedUserActionProps) {
 
   const onRemove = () => {
     startTransition(() => {
-      // TODO: create unassign user server action
+      unassignUser(userId, projectId)
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            setIsOpen(false);
+            toast.success(data.success);
+            router.refresh();
+          }
+        })
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
     });
   };
 

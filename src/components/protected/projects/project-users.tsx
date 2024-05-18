@@ -79,7 +79,10 @@ export function ProjectUsers({ allUsers, project }: ProjectUsersProps) {
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    <AssignedUserAction userId={user.id} />
+                    <AssignedUserAction
+                      userId={user.id}
+                      projectId={project?.id}
+                    />
                   </TableCell>
                 </TableRow>
               ))}

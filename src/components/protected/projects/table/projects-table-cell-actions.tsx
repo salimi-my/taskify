@@ -9,7 +9,7 @@ import {
 } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
+import { DeleteProjectsDialog } from '@/components/protected/projects/table/delete-projects-dialog';
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -34,7 +34,11 @@ export function ProjectsTableCellActions({
 
   return (
     <>
-      {/* Delete project dialog */}
+      <DeleteProjectsDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        projects={[row]}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

@@ -1,3 +1,4 @@
+import { BackButton } from '@/components/back-button';
 import { ContentLayout } from '@/components/admin-panel/content-layout';
 import {
   Card,
@@ -10,6 +11,10 @@ import {
 export default function CreateTaskPage() {
   return (
     <ContentLayout title='New Task'>
+      <BackButton
+        slug='/tasks?page=1&sort=createdAt.desc'
+        label='Back to Tasks'
+      />
       <div className='grid xl:grid-cols-8 gap-4'>
         <div className='xl:col-span-5'>
           <Card className='rounded-lg border-none'>

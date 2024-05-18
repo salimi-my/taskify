@@ -8,7 +8,7 @@ import { type Project } from '@prisma/client';
 import { type Row } from '@tanstack/react-table';
 
 import { Button } from '@/components/ui/button';
-// import { deleteProject } from '@/actions/projects/delete-project';
+import { deleteProjects } from '@/actions/projects/delete-projects';
 import {
   Dialog,
   DialogClose,
@@ -48,7 +48,20 @@ export function DeleteProjectsDialog({
 
   const onDelete = () => {
     startTransition(() => {
-      // TODO: Create delete projects server action
+      deleteProjects(projects.map((row) => row.original.id))
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            onClose();
+            onSuccess?.();
+            toast.success(data.success);
+            router.refresh();
+          }
+        })
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
     });
   };
 

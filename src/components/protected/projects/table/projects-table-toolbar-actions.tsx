@@ -6,8 +6,8 @@ import type { Table } from '@tanstack/react-table';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import { DeleteUsersDialog } from '@/components/protected/users/table/delete-users-dialog';
 import { CreateProjectDialog } from '@/components/protected/projects/table/create-project-dialog';
+import { DeleteProjectsDialog } from '@/components/protected/projects/table/delete-projects-dialog';
 
 type ProjectWithCount = Project & {
   tasksCount: number;
@@ -42,7 +42,12 @@ export function ProjectsTableToolbarActions({
               Delete ({table.getFilteredSelectedRowModel().rows.length})
             </span>
           </Button>
-          {/* Delete project dialog */}
+          <DeleteProjectsDialog
+            isOpen={isDeleteOpen}
+            onClose={() => setIsDeleteOpen(false)}
+            projects={table.getFilteredSelectedRowModel().rows}
+            onSuccess={() => table.toggleAllPageRowsSelected(false)}
+          />
         </>
       ) : null}
       <>

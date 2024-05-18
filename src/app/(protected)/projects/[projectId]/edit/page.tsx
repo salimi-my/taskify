@@ -1,5 +1,6 @@
 import { getAllUsers } from '@/data/users';
 import { getProjectById } from '@/data/projects';
+import { BackButton } from '@/components/back-button';
 import { ContentLayout } from '@/components/admin-panel/content-layout';
 import { ProjectUsers } from '@/components/protected/projects/project-users';
 import { EditProjectForm } from '@/components/protected/projects/edit-project-form';
@@ -21,6 +22,10 @@ export default async function EditProjectPage({
 
   return (
     <ContentLayout title='Edit Project'>
+      <BackButton
+        slug='/projects?page=1&sort=createdAt.desc'
+        label='Back to Projects'
+      />
       <div className='grid lg:grid-cols-5 gap-4'>
         <Card className='rounded-lg border-none col-span-2'>
           <CardHeader className='mx-[1px] pb-9'>

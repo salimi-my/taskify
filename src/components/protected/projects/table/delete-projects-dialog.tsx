@@ -73,7 +73,7 @@ export function DeleteProjectsDialog({
           <DialogDescription>
             This action cannot be undone. This will permanently delete{' '}
             <span className='font-medium'>{projects.length}</span>
-            {projects.length === 1 ? ' user' : ' users'} from database.
+            {projects.length === 1 ? ' project' : ' projects'} from database.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className='gap-2 sm:space-x-0'>

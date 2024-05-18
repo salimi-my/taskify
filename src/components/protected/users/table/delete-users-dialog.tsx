@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { type Row } from '@tanstack/react-table';
 
 import { Button } from '@/components/ui/button';
-import { deleteUser } from '@/actions/users/delete-user';
+import { deleteUsers } from '@/actions/users/delete-users';
 import {
   Dialog,
   DialogClose,
@@ -47,7 +47,7 @@ export function DeleteUsersDialog({
 
   const onDelete = () => {
     startTransition(() => {
-      deleteUser(users.map((row) => row.original.id))
+      deleteUsers(users.map((row) => row.original.id))
         .then((data) => {
           if (data.error) {
             toast.error(data.error);

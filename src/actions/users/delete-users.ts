@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 import { currentUser } from '@/lib/authentication';
 import { getErrorMessage } from '@/lib/handle-error';
 
-export async function deleteUser(user_ids: string[]) {
+export async function deleteUsers(user_ids: string[]) {
   const user = await currentUser();
 
   if (!user || !user.id) {

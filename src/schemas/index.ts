@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import { UserRole } from '@prisma/client';
+import { TaskLabel, TaskPriority, UserRole } from '@prisma/client';
 
 export const RegisterSchema = z
   .object({
@@ -137,4 +137,13 @@ export const EditProjectSchema = z.object({
 export const AssignProjectUserSchema = z.object({
   projectId: z.string().min(1, { message: 'Project ID is required.' }),
   userId: z.string().min(1, { message: 'User is required.' })
+});
+
+export const CreateTaskSchema = z.object({
+  title: z.string().min(1, { message: 'Title is required.' }),
+  body: z.string().optional(),
+  projectId: z.string().optional(),
+  label: z.enum([TaskLabel.BUG, TaskLabel.ENHANCEMENT, TaskLabel.FEATURE]),
+  priority: z.enum([TaskPriority.LOW, TaskPriority.MEDIUM, TaskPriority.HIGH]),
+  assignees: z.array(z.string())
 });

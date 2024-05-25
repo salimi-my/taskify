@@ -55,7 +55,7 @@ export function CreateTaskForm() {
   };
 
   return (
-    <div className='grid xl:grid-cols-10 gap-4'>
+    <div className='flex flex-col xl:grid xl:grid-cols-10 gap-4'>
       <div className='xl:col-span-7'>
         <Card className='rounded-lg border-none'>
           <CardHeader className='mx-[1px] pb-9'>

@@ -2,10 +2,11 @@
 
 import * as z from 'zod';
 import { toast } from 'sonner';
-import { useTransition } from 'react';
+import dynamic from 'next/dynamic';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { Suspense, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { CreateTaskSchema } from '@/schemas';
@@ -26,6 +27,10 @@ import {
   FormControl,
   FormMessage
 } from '@/components/ui/form';
+
+const Editor = dynamic(() => import('@/components/mdx-editor/editor'), {
+  ssr: false
+});
 
 export function CreateTaskForm() {
   const router = useRouter();
@@ -50,8 +55,8 @@ export function CreateTaskForm() {
   };
 
   return (
-    <div className='grid xl:grid-cols-8 gap-4'>
-      <div className='xl:col-span-5'>
+    <div className='grid xl:grid-cols-10 gap-4'>
+      <div className='xl:col-span-7'>
         <Card className='rounded-lg border-none'>
           <CardHeader className='mx-[1px] pb-9'>
             <CardTitle className='text-xl font-semibold'>Create Task</CardTitle>
@@ -77,6 +82,24 @@ export function CreateTaskForm() {
                           placeholder='Enter title'
                           disabled={isPending}
                         />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='body'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Suspense fallback={null}>
+                          <Editor
+                            markdown={form.watch('body')}
+                            setMarkdown={field.onChange}
+                          />
+                        </Suspense>
                       </FormControl>
                       <FormMessage />
                     </FormItem>

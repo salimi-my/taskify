@@ -143,7 +143,11 @@ export const CreateTaskSchema = z.object({
   title: z.string().min(1, { message: 'Title is required.' }),
   body: z.string().optional(),
   projectId: z.string().optional(),
-  label: z.enum([TaskLabel.BUG, TaskLabel.ENHANCEMENT, TaskLabel.FEATURE]),
-  priority: z.enum([TaskPriority.LOW, TaskPriority.MEDIUM, TaskPriority.HIGH]),
-  assignees: z.array(z.string())
+  label: z
+    .enum([TaskLabel.BUG, TaskLabel.ENHANCEMENT, TaskLabel.FEATURE])
+    .optional(),
+  priority: z
+    .enum([TaskPriority.LOW, TaskPriority.MEDIUM, TaskPriority.HIGH])
+    .optional(),
+  assignees: z.array(z.string()).optional()
 });

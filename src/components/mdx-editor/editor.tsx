@@ -48,14 +48,16 @@ const Editor: FC<EditorProps> = ({ markdown, setMarkdown, editorRef }) => {
         imagePlugin(),
         tablePlugin(),
         thematicBreakPlugin(),
-        codeBlockPlugin({ defaultCodeBlockLanguage: 'txt' }),
+        codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),
         sandpackPlugin(),
         codeMirrorPlugin({
           codeBlockLanguages: {
+            php: 'PHP',
             js: 'JavaScript',
+            tsx: 'TypeScript',
             css: 'CSS',
-            txt: 'text',
-            tsx: 'TypeScript'
+            html: 'HTML',
+            txt: 'text'
           }
         }),
         diffSourcePlugin({

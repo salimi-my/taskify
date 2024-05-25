@@ -62,5 +62,9 @@
 .mdxeditor-rich-text-editor,
 .mdxeditor-source-editor,
 .mdxeditor-diff-editor {
-  @apply border rounded-md mt-2 min-h-40 p-1;
+  @apply border rounded-md mt-2 p-1;
+}
+
+.mdxeditor-root-contenteditable {
+  @apply min-h-48;
 }

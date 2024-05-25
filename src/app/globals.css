@@ -53,7 +53,14 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.mdxeditor-rich-text-editor,
+.mdxeditor-source-editor,
+.mdxeditor-diff-editor {
+  @apply border rounded-md mt-2 min-h-40 p-1;
 }

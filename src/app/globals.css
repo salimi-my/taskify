@@ -65,6 +65,11 @@
   @apply border rounded-md mt-2 p-1;
 }
 
+.mdxeditor-source-editor,
+.mdxeditor-diff-editor {
+  @apply min-h-48;
+}
+
 .mdxeditor-root-contenteditable > div {
   @apply min-h-48;
 }

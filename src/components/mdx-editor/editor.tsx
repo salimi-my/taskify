@@ -37,6 +37,27 @@ interface EditorProps {
 const Editor: FC<EditorProps> = ({ markdown, setMarkdown, editorRef }) => {
   const { edgestore } = useEdgeStore();
 
+  const onUpload = () => {
+    // disable inputs
+    document
+      .querySelectorAll('.mdxeditor-popup-container > div > form > div > input')
+      ?.forEach((input) => input.setAttribute('disabled', 'disabled'));
+
+    // disable submit button
+    document
+      .querySelector(
+        '.mdxeditor-popup-container > div > form > div > button[type="submit"]'
+      )
+      ?.setAttribute('disabled', 'disabled');
+
+    // disable reset button
+    document
+      .querySelector(
+        '.mdxeditor-popup-container > div > form > div > button[type="reset"]'
+      )
+      ?.setAttribute('disabled', 'disabled');
+  };
+
   return (
     <MDXEditor
       onChange={setMarkdown}
@@ -55,7 +76,9 @@ const Editor: FC<EditorProps> = ({ markdown, setMarkdown, editorRef }) => {
         imagePlugin({
           imageUploadHandler: async (image: File) => {
             if (image) {
+              onUpload();
               toast.loading('Uploading image...');
+
               try {
                 const res = await edgestore.publicImages.upload({
                   file: image

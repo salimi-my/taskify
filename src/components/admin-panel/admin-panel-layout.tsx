@@ -6,11 +6,7 @@ import { Footer } from '@/components/admin-panel/footer';
 import { Sidebar } from '@/components/admin-panel/sidebar';
 import { useSidebarToggle } from '@/hooks/use-sidebar-toggle';
 
-export default function AdminPanelLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
+export function AdminPanelLayout({ children }: { children: React.ReactNode }) {
   const sidebar = useStore(useSidebarToggle, (state) => state);
 
   if (!sidebar) return null;

@@ -34,6 +34,7 @@ const Editor: FC<EditorProps> = ({ markdown, setMarkdown, editorRef }) => {
   return (
     <MDXEditor
       onChange={setMarkdown}
+      placeholder='Add your task description here...'
       ref={editorRef}
       markdown={markdown || ''}
       plugins={[

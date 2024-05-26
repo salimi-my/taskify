@@ -65,6 +65,6 @@
   @apply border rounded-md mt-2 p-1;
 }
 
-.mdxeditor-root-contenteditable {
+.mdxeditor-root-contenteditable > div {
   @apply min-h-48;
 }

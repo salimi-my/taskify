@@ -1,6 +1,9 @@
 'use client';
 
 import { FC } from 'react';
+import { toast } from 'sonner';
+import { formatFileSize } from '@edgestore/react/utils';
+import { EdgeStoreApiClientError } from '@edgestore/react/shared';
 import {
   MDXEditor,
   linkPlugin,
@@ -20,6 +23,7 @@ import {
   markdownShortcutPlugin
 } from '@mdxeditor/editor';
 
+import { useEdgeStore } from '@/lib/edgestore';
 import { Toolbar } from '@/components/mdx-editor/toolbar';
 
 import '@mdxeditor/editor/style.css';
@@ -31,6 +35,8 @@ interface EditorProps {
 }
 
 const Editor: FC<EditorProps> = ({ markdown, setMarkdown, editorRef }) => {
+  const { edgestore } = useEdgeStore();
+
   return (
     <MDXEditor
       onChange={setMarkdown}
@@ -46,7 +52,46 @@ const Editor: FC<EditorProps> = ({ markdown, setMarkdown, editorRef }) => {
         headingsPlugin({ allowedHeadingLevels: [1, 2, 3] }),
         linkPlugin(),
         linkDialogPlugin(),
-        imagePlugin(),
+        imagePlugin({
+          imageUploadHandler: async (image: File) => {
+            if (image) {
+              toast.loading('Uploading image...');
+              try {
+                const res = await edgestore.publicImages.upload({
+                  file: image
+                });
+
+                toast.dismiss();
+                toast.success('Image uploaded!');
+
+                return res.url;
+              } catch (error) {
+                toast.dismiss();
+
+                if (error instanceof EdgeStoreApiClientError) {
+                  if (error.data.code === 'FILE_TOO_LARGE') {
+                    toast.error(
+                      `File too large. Max size is ${formatFileSize(
+                        error.data.details.maxFileSize
+                      )}`
+                    );
+                  }
+
+                  if (error.data.code === 'MIME_TYPE_NOT_ALLOWED') {
+                    toast.error(
+                      `File type not allowed. Allowed types are ${error.data.details.allowedMimeTypes.join(
+                        ', '
+                      )}`
+                    );
+                  }
+                } else {
+                  toast.error('Uh oh! Something went wrong.');
+                }
+              }
+            }
+            return '';
+          }
+        }),
         tablePlugin(),
         thematicBreakPlugin(),
         codeBlockPlugin({ defaultCodeBlockLanguage: 'js' }),

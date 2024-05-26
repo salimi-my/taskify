@@ -61,6 +61,7 @@ const Editor: FC<EditorProps> = ({ markdown, setMarkdown, editorRef }) => {
   return (
     <MDXEditor
       onChange={setMarkdown}
+      contentEditableClassName='prose'
       placeholder='Add your task description here...'
       ref={editorRef}
       markdown={markdown || ''}

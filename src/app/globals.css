@@ -59,6 +59,235 @@
   }
 }
 
+/* Start MDX Editor */
+
+@layer components {
+  .my-line-highlight span.token {
+    @apply bg-neutral-border;
+  }
+
+  .prose {
+    min-width: 0;
+
+    & code {
+      @apply text-customsecondary-text bg-neutral-bgSubtle px-1;
+
+      &:before,
+      &:after {
+        content: none;
+        @apply text-customaccent-text;
+      }
+    }
+
+    & a {
+      @apply text-customaccent-text;
+      text-decoration: none;
+    }
+
+    & code[data-lexical-text] {
+      @apply font-mono;
+      font-size: inherit;
+      font-weight: inherit;
+
+      &:before,
+      &:after {
+        content: none;
+      }
+    }
+
+    & [data-lexical-decorator] > table {
+      table-layout: fixed;
+
+      & td {
+        vertical-align: middle;
+      }
+
+      & > thead,
+      & > tfoot,
+      & > tbody > tr {
+        border: 0;
+      }
+
+      & [data-tool-cell] {
+        padding: 1px;
+        border: 0;
+        line-height: 1rem;
+        vertical-align: middle;
+      }
+
+      & > thead [data-tool-cell]:first-child {
+        vertical-align: middle;
+      }
+    }
+
+    & pre[class*='language-'] {
+      overflow-x: auto;
+    }
+
+    & pre[class*='language-'],
+    & code[class*='language-'] {
+      @apply font-mono;
+      font-size: inherit;
+    }
+
+    & pre[class*='language-'] > code {
+      @apply text-sm;
+      display: block;
+    }
+
+    .cm-content {
+      @apply font-mono;
+      @apply text-xs;
+    }
+
+    & [data-editor-type='frontmatter'] {
+      & table {
+        margin: 0;
+        font-size: inherit;
+        width: auto;
+
+        & thead,
+        & tbody,
+        & tfoot,
+        & tr {
+          border: 0;
+        }
+      }
+    }
+
+    & li[role='checkbox'] {
+      text-indent: 1.2rem;
+    }
+
+    & li[role='checkbox']::before {
+      transform: translate(6px, 6px);
+    }
+
+    & li[role='checkbox']::after {
+      transform: translate(6px, 6px) rotate(45deg);
+    }
+  }
+
+  .api-ref-nav > a {
+    @apply mb-3;
+    display: block;
+  }
+
+  .api-ref-nav a::before {
+    @apply rounded-sm border-neutral-text border-[1px] font-mono text-xs;
+    content: ' ';
+    line-height: 1rem;
+    position: relative;
+    display: inline-block;
+    margin-inline-end: 0.5rem;
+    padding: 0 0.15rem;
+  }
+
+  .api-ref-nav a[href*='types']::before {
+    content: 'T';
+  }
+
+  .api-ref-nav a[href*='variables']::before {
+    content: 'V';
+  }
+
+  .api-ref-nav a[href*='functions']::before {
+    content: 'F';
+  }
+
+  .api-ref-nav a[href*='interfaces']::before {
+    content: 'I';
+  }
+
+  .api-ref-nav a[href*='classes']::before {
+    content: 'C';
+  }
+
+  .api-ref-nav > dl > dd > dl {
+    @apply pl-2;
+  }
+
+  .api-ref-nav dd dd {
+    @apply mb-2;
+  }
+
+  .api-ref-nav > dl > dt {
+    @apply font-medium;
+  }
+
+  .in-page-nav {
+    @apply border-l-customaccent-solid border-dotted border-l-2 pl-4 text-sm sticky top-[94px] w-48;
+
+    p {
+      @apply mb-2;
+    }
+
+    li ul {
+      @apply pl-2;
+    }
+
+    li > a {
+      @apply block mb-1 text-neutral-text;
+    }
+  }
+
+  .doc-nav {
+    & a:hover {
+      @apply text-customaccent-text;
+    }
+
+    & a[data-current='true'] {
+      @apply text-customaccent-text cursor-default;
+    }
+  }
+
+  .doc-content .homepage ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .doc-content blockquote {
+    font-style: normal;
+  }
+
+  .doc-content blockquote p::before {
+    content: '';
+  }
+
+  .doc-content blockquote p::after {
+    content: '';
+  }
+
+  h2#classes + table,
+  h2#functions + table,
+  h2#interfaces + table,
+  h2#type-aliases + table {
+    & td:first-child,
+    & tr:first-child {
+      width: 50%;
+    }
+  }
+
+  .feature-overview-popover {
+    & a {
+      @apply text-customaccent-text;
+
+      & svg {
+        @apply inline;
+      }
+    }
+
+    & p {
+      @apply mb-4;
+    }
+  }
+
+  a > code {
+    text-decoration: none;
+    border-bottom: 1px dotted var(--blue9);
+  }
+}
+
 .mdxeditor-rich-text-editor,
 .mdxeditor-source-editor,
 .mdxeditor-diff-editor {
@@ -71,7 +300,7 @@
 }
 
 .mdxeditor-root-contenteditable > div {
-  @apply min-h-48;
+  @apply min-h-48 min-w-full;
 }
 
 .mdxeditor-popup-container {
@@ -113,3 +342,42 @@
 .mdxeditor-popup-container > div > form > div > button[type='reset'] {
   @apply border-none cursor-pointer inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-8 rounded-md px-3 text-xs mt-3;
 }
+
+.mdxeditor-toolbar {
+  @apply dark:bg-secondary dark:text-white;
+}
+
+.mdxeditor-toolbar button svg {
+  @apply dark:text-white dark:hover:text-secondary;
+}
+
+.mdxeditor-toolbar button[aria-checked='true'] svg {
+  @apply dark:text-secondary;
+}
+
+.mdxeditor-toolbar button[aria-label='Block type'] {
+  @apply dark:bg-gray-200 dark:text-secondary;
+}
+
+.mdxeditor-toolbar button[aria-label='Block type'] svg {
+  @apply dark:text-black;
+}
+
+.mdxeditor-rich-text-editor div[aria-label='editable markdown'] {
+  @apply dark:text-white;
+}
+
+.mdxeditor-popup-container > div[data-aria-hidden='true'] {
+  @apply bg-black/80 opacity-100;
+}
+
+.mdxeditor-popup-container div[role='dialog'] {
+  @apply bg-background shadow-lg border border-border dark:text-white;
+}
+
+.mdxeditor-toolbar button[aria-label='Code block language'],
+.mdxeditor-rich-text-editor button[aria-label='Language'] {
+  @apply dark:text-black;
+}
+
+/* End MDX Editor */

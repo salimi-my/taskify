@@ -380,4 +380,8 @@
   @apply dark:text-black;
 }
 
+.prose strong {
+  @apply dark:text-white;
+}
+
 /* End MDX Editor */

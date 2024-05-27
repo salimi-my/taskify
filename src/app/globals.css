@@ -381,7 +381,10 @@
 }
 
 .prose strong,
-.prose blockquote {
+.prose blockquote,
+.prose h1,
+.prose h2,
+.prose h3 {
   @apply dark:text-white;
 }
 

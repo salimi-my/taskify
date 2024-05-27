@@ -380,7 +380,8 @@
   @apply dark:text-black;
 }
 
-.prose strong {
+.prose strong,
+.prose blockquote {
   @apply dark:text-white;
 }
 

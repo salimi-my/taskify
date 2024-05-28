@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import dynamic from 'next/dynamic';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { type User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Suspense, useTransition } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,7 +33,11 @@ const Editor = dynamic(() => import('@/components/mdx-editor/editor'), {
   ssr: false
 });
 
-export function CreateTaskForm() {
+interface CreateTaskFormProps {
+  users: User[] | null;
+}
+
+export function CreateTaskForm({ users }: CreateTaskFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

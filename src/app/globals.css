@@ -344,7 +344,7 @@
 }
 
 .mdxeditor-toolbar {
-  @apply dark:bg-secondary dark:text-white;
+  @apply dark:bg-secondary dark:text-white !top-14;
 }
 
 .mdxeditor-toolbar button svg {

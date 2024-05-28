@@ -13,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateTaskSchema } from '@/schemas';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { MultipleSelector } from '@/components/ui/multiple-selector';
 import {
   Card,
   CardTitle,
@@ -60,21 +61,20 @@ export function CreateTaskForm({ users }: CreateTaskFormProps) {
   };
 
   return (
-    <div className='flex flex-col xl:grid xl:grid-cols-10 gap-4'>
-      <div className='xl:col-span-7'>
-        <Card className='rounded-lg border-none'>
-          <CardHeader className='mx-[1px] pb-9'>
-            <CardTitle className='text-xl font-semibold'>Create Task</CardTitle>
-            <CardDescription>
-              Fill in the form to create a new task.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form
-                className='space-y-4'
-                onSubmit={form.handleSubmit(onSubmit)}
-              >
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className='flex flex-col xl:grid xl:grid-cols-10 gap-4'>
+          <div className='xl:col-span-7'>
+            <Card className='rounded-lg border-none'>
+              <CardHeader className='mx-[1px] pb-9'>
+                <CardTitle className='text-xl font-semibold'>
+                  Create Task
+                </CardTitle>
+                <CardDescription>
+                  Fill in the form to create a new task.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className='space-y-4'>
                 <FormField
                   control={form.control}
                   name='title'
@@ -127,22 +127,55 @@ export function CreateTaskForm({ users }: CreateTaskFormProps) {
                     {!isPending && <>Save</>}
                   </Button>
                 </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
-      <div className='xl:col-span-3'>
-        <Card className='rounded-lg border-none'>
-          <CardHeader className='mx-[1px] pb-9'>
-            <CardTitle className='text-xl font-semibold'>
-              Task Details
-            </CardTitle>
-            <CardDescription>Manage additional task details.</CardDescription>
-          </CardHeader>
-          <CardContent>{/* TODO: Add task details form */}</CardContent>
-        </Card>
-      </div>
-    </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div className='xl:col-span-3'>
+            <Card className='rounded-lg border-none'>
+              <CardHeader className='mx-[1px] pb-9'>
+                <CardTitle className='text-xl font-semibold'>
+                  Task Details
+                </CardTitle>
+                <CardDescription>
+                  Manage additional task details.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name='assignees'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Assignees</FormLabel>
+                      <FormControl>
+                        <MultipleSelector
+                          {...field}
+                          defaultOptions={
+                            users && users.length > 0
+                              ? users.map((user) => ({
+                                  id: user.id,
+                                  value: user.name || '',
+                                  label: user.name || ''
+                                }))
+                              : []
+                          }
+                          placeholder='Select assignees'
+                          emptyIndicator={
+                            <p className='text-center text-sm text-gray-600 dark:text-gray-400'>
+                              No results found.
+                            </p>
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </form>
+    </Form>
   );
 }

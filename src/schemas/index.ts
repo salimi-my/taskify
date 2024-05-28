@@ -149,5 +149,14 @@ export const CreateTaskSchema = z.object({
   priority: z
     .enum([TaskPriority.LOW, TaskPriority.MEDIUM, TaskPriority.HIGH])
     .optional(),
-  assignees: z.array(z.string()).optional()
+  assignees: z
+    .array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        value: z.string(),
+        disable: z.boolean().optional()
+      })
+    )
+    .optional()
 });

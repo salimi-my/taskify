@@ -139,3 +139,13 @@ export async function getProjectById(id: string) {
     return null;
   }
 }
+
+export async function getAllProjects() {
+  try {
+    const projects = await db.project.findMany();
+
+    return projects;
+  } catch {
+    return null;
+  }
+}

@@ -159,7 +159,7 @@ export function CreateTaskForm({ users }: CreateTaskFormProps) {
                                 }))
                               : []
                           }
-                          placeholder='Select assignees'
+                          placeholder='Assign users to this task'
                           emptyIndicator={
                             <p className='text-center text-sm text-gray-600 dark:text-gray-400'>
                               No results found.

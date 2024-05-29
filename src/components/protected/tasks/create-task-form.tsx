@@ -5,9 +5,9 @@ import { toast } from 'sonner';
 import dynamic from 'next/dynamic';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { type User } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 import { Suspense, useTransition } from 'react';
+import type { Project, User } from '@prisma/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { CreateTaskSchema } from '@/schemas';
@@ -29,6 +29,13 @@ import {
   FormControl,
   FormMessage
 } from '@/components/ui/form';
+import {
+  Select,
+  SelectItem,
+  SelectValue,
+  SelectTrigger,
+  SelectContent
+} from '@/components/ui/select';
 
 const Editor = dynamic(() => import('@/components/mdx-editor/editor'), {
   ssr: false
@@ -36,9 +43,10 @@ const Editor = dynamic(() => import('@/components/mdx-editor/editor'), {
 
 interface CreateTaskFormProps {
   users: User[] | null;
+  projects: Project[] | null;
 }
 
-export function CreateTaskForm({ users }: CreateTaskFormProps) {
+export function CreateTaskForm({ users, projects }: CreateTaskFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -140,7 +148,7 @@ export function CreateTaskForm({ users }: CreateTaskFormProps) {
                   Manage additional task details.
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className='space-y-4'>
                 <FormField
                   control={form.control}
                   name='assignees'
@@ -167,6 +175,41 @@ export function CreateTaskForm({ users }: CreateTaskFormProps) {
                           }
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='projectId'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project</FormLabel>
+                      <Select
+                        disabled={isPending}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select project' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {projects ? (
+                            projects.map((project) => (
+                              <SelectItem key={project.id} value={project.id}>
+                                {project.name}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value='none' disabled>
+                              No projects found.
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

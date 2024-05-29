@@ -7,8 +7,13 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { Suspense, useTransition } from 'react';
-import type { Project, User } from '@prisma/client';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  TaskLabel,
+  TaskPriority,
+  type Project,
+  type User
+} from '@prisma/client';
 
 import { CreateTaskSchema } from '@/schemas';
 import { Input } from '@/components/ui/input';
@@ -138,6 +143,7 @@ export function CreateTaskForm({ users, projects }: CreateTaskFormProps) {
               </CardContent>
             </Card>
           </div>
+
           <div className='xl:col-span-3'>
             <Card className='rounded-lg border-none'>
               <CardHeader className='mx-[1px] pb-9'>
@@ -151,30 +157,61 @@ export function CreateTaskForm({ users, projects }: CreateTaskFormProps) {
               <CardContent className='space-y-4'>
                 <FormField
                   control={form.control}
-                  name='assignees'
+                  name='label'
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Assignees</FormLabel>
-                      <FormControl>
-                        <MultipleSelector
-                          {...field}
-                          defaultOptions={
-                            users && users.length > 0
-                              ? users.map((user) => ({
-                                  id: user.id,
-                                  value: user.name || '',
-                                  label: user.name || ''
-                                }))
-                              : []
-                          }
-                          placeholder='Assign users to this task'
-                          emptyIndicator={
-                            <p className='text-center text-sm text-gray-600 dark:text-gray-400'>
-                              No results found.
-                            </p>
-                          }
-                        />
-                      </FormControl>
+                      <FormLabel>Label</FormLabel>
+                      <Select
+                        disabled={isPending}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select label' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value={TaskLabel.BUG}>Bug</SelectItem>
+                          <SelectItem value={TaskLabel.FEATURE}>
+                            Feature
+                          </SelectItem>
+                          <SelectItem value={TaskLabel.ENHANCEMENT}>
+                            Enhancement
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='priority'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Priority</FormLabel>
+                      <Select
+                        disabled={isPending}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select priority' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value={TaskPriority.LOW}>Low</SelectItem>
+                          <SelectItem value={TaskPriority.MEDIUM}>
+                            Medium
+                          </SelectItem>
+                          <SelectItem value={TaskPriority.HIGH}>
+                            High
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -210,6 +247,37 @@ export function CreateTaskForm({ users, projects }: CreateTaskFormProps) {
                           )}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='assignees'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Assignees</FormLabel>
+                      <FormControl>
+                        <MultipleSelector
+                          {...field}
+                          defaultOptions={
+                            users && users.length > 0
+                              ? users.map((user) => ({
+                                  id: user.id,
+                                  value: user.name || '',
+                                  label: user.name || ''
+                                }))
+                              : []
+                          }
+                          placeholder='Assign users to this task'
+                          emptyIndicator={
+                            <p className='text-center text-sm text-gray-600 dark:text-gray-400'>
+                              No results found.
+                            </p>
+                          }
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}

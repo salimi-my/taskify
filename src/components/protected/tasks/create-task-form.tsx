@@ -41,6 +41,7 @@ import {
   SelectTrigger,
   SelectContent
 } from '@/components/ui/select';
+import { createTask } from '@/actions/tasks/create-task';
 
 const Editor = dynamic(() => import('@/components/mdx-editor/editor'), {
   ssr: false
@@ -69,7 +70,17 @@ export function CreateTaskForm({ users, projects }: CreateTaskFormProps) {
 
   const onSubmit = (values: z.infer<typeof CreateTaskSchema>) => {
     startTransition(() => {
-      // TODO: Add create task server action
+      createTask(values)
+        .then((data) => {
+          if (data.error) {
+            toast.error(data.error);
+          }
+
+          if (data.success) {
+            toast.success(data.success);
+          }
+        })
+        .catch(() => toast.error('Uh oh! Something went wrong.'));
     });
   };
 

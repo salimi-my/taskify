@@ -1,6 +1,6 @@
 import * as z from 'zod';
-import type { Task } from '@prisma/client';
 import { unstable_noStore as noStore } from 'next/cache';
+import type { Task, TaskLabel, TaskPriority, TaskStatus } from '@prisma/client';
 
 import { db } from '@/lib/db';
 import { TaskFilterSchema } from '@/schemas';
@@ -40,7 +40,15 @@ export async function getTasks(
 
     // Define orderBy
     const orderBy: { [key: string]: 'asc' | 'desc' } =
-      column && ['title', 'description', 'createdAt'].includes(column)
+      column &&
+      [
+        'title',
+        'description',
+        'label',
+        'priority',
+        'status',
+        'createdAt'
+      ].includes(column)
         ? order === 'asc'
           ? { [column]: 'asc' }
           : { [column]: 'desc' }
@@ -54,6 +62,15 @@ export async function getTasks(
           project: true
         },
         where: {
+          label: {
+            in: label ? (label.split('.') as TaskLabel[]) : undefined
+          },
+          priority: {
+            in: priority ? (priority.split('.') as TaskPriority[]) : undefined
+          },
+          status: {
+            in: status ? (status.split('.') as TaskStatus[]) : undefined
+          },
           createdAt: {
             gte: fromDay,
             lte: toDay
@@ -78,6 +95,15 @@ export async function getTasks(
       }),
       db.task.count({
         where: {
+          label: {
+            in: label ? (label.split('.') as TaskLabel[]) : undefined
+          },
+          priority: {
+            in: priority ? (priority.split('.') as TaskPriority[]) : undefined
+          },
+          status: {
+            in: status ? (status.split('.') as TaskStatus[]) : undefined
+          },
           createdAt: {
             gte: fromDay,
             lte: toDay

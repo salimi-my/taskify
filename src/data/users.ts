@@ -37,7 +37,7 @@ export async function getUsers(
     const fromDay = from ? new Date(from) : undefined;
     const toDay = to ? new Date(to) : undefined;
 
-    // Configure OR clause
+    // Configure AND clause
     let andClause = [];
     if (name) {
       andClause.push({

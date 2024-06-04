@@ -19,7 +19,7 @@ interface TasksTableProps {
   tasksPromise: ReturnType<typeof getTasks>;
 }
 
-export default function TasksTable({ tasksPromise }: TasksTableProps) {
+export function TasksTable({ tasksPromise }: TasksTableProps) {
   const { data, pageCount } = use(tasksPromise);
 
   // Memoize the columns so they don't re-render on every render

@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 
 import { SearchParams } from '@/types';
 import { TaskFilterSchema } from '@/schemas';
+import { Table } from '@/components/protected/tasks/table/table';
 import { DataTableCard } from '@/components/protected/data-table-card';
 import { ContentLayout } from '@/components/admin-panel/content-layout';
 import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton';
@@ -28,7 +29,7 @@ export default async function TasksPage({ searchParams }: TasksPageProps) {
             />
           }
         >
-          TasksPage
+          <Table searchParams={searchParams} />
         </Suspense>
       </DataTableCard>
     </ContentLayout>

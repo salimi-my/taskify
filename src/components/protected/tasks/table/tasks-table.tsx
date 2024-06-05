@@ -43,7 +43,7 @@ export function TasksTable({ tasksPromise }: TasksTableProps) {
       }))
     },
     {
-      label: 'priority',
+      label: 'Priority',
       value: 'priority',
       options: ['LOW', 'MEDIUM', 'HIGH'].map((priority) => ({
         label:
@@ -51,6 +51,19 @@ export function TasksTable({ tasksPromise }: TasksTableProps) {
         value: priority,
         withCount: true
       }))
+    },
+    {
+      label: 'Status',
+      value: 'status',
+      options: ['OPEN', 'TODO', 'IN_PROGRESS', 'CLOSED', 'CANCELLED'].map(
+        (status) => ({
+          label:
+            status.replace(/_/g, ' ').charAt(0).toUpperCase() +
+            status.replace(/_/g, ' ').slice(1).toLowerCase(),
+          value: status,
+          withCount: true
+        })
+      )
     }
   ];
 

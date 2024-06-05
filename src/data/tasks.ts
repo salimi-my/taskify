@@ -137,7 +137,7 @@ export async function getTasks(
       };
     });
 
-    return { data: [], pageCount: 0 };
+    return { data, pageCount };
   } catch {
     return { data: [], pageCount: 0 };
   }

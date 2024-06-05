@@ -75,6 +75,18 @@ export function getColumns(): ColumnDef<TaskWithProject>[] {
       )
     },
     {
+      accessorKey: 'label',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title='Label' />
+      ),
+      cell: ({ row }) => (
+        <Badge variant='outline'>
+          {row.original.label.charAt(0).toUpperCase() +
+            row.original.label.slice(1).toLowerCase()}
+        </Badge>
+      )
+    },
+    {
       accessorKey: 'createdAt',
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title='Created At' />

@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
+import { TasksTableCellActions } from '@/components/protected/tasks/table/tasks-table-cell-actions';
 
 type TaskWithProject = Task & {
   project: string;
@@ -92,6 +93,10 @@ export function getColumns(): ColumnDef<TaskWithProject>[] {
         <DataTableColumnHeader column={column} title='Created At' />
       ),
       cell: ({ cell }) => formatDate(cell.getValue() as Date)
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => <TasksTableCellActions row={row} />
     }
   ];
 }

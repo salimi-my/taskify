@@ -23,7 +23,7 @@ export default async function TasksPage({ searchParams }: TasksPageProps) {
             <DataTableSkeleton
               columnCount={6}
               searchableColumnCount={1}
-              filterableColumnCount={2}
+              filterableColumnCount={3}
               cellWidths={['15rem', '25rem', '10rem', '10rem', '8rem', '8rem']}
               shrinkZero
             />

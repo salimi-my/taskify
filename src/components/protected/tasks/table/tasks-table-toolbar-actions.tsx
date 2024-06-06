@@ -1,12 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
-import { type Task } from '@prisma/client';
+import type { Task } from '@prisma/client';
 import type { Table } from '@tanstack/react-table';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
 type TaskWithProject = Task & {
   project: string;

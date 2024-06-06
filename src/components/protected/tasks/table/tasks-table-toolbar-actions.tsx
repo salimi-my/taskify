@@ -6,6 +6,7 @@ import type { Table } from '@tanstack/react-table';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type TaskWithProject = Task & {
   project: string;
@@ -41,9 +42,11 @@ export function TasksTableToolbarActions({
         </>
       ) : null}
       <>
-        <Button variant='outline' size='sm' onClick={() => {}}>
-          <PlusIcon className='mr-2 size-4' aria-hidden='true' />
-          New task
+        <Button variant='outline' size='sm' asChild>
+          <Link href='/tasks/create'>
+            <PlusIcon className='mr-2 size-4' aria-hidden='true' />
+            New task
+          </Link>
         </Button>
       </>
     </div>

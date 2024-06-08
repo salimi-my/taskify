@@ -49,7 +49,7 @@ export function getColumns(): ColumnDef<TaskWithProject>[] {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title='Project' />
       ),
-      cell: ({ row }) => row.getValue('project')
+      cell: ({ row }) => row.getValue('project') || 'N/A'
     },
     {
       accessorKey: 'status',

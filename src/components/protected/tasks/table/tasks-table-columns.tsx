@@ -42,7 +42,13 @@ export function getColumns(): ColumnDef<TaskWithProject>[] {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title='Title' />
       ),
-      cell: ({ row }) => row.getValue('title')
+      cell: ({ row }) => (
+        <div className='flex'>
+          <span className='max-w-[300px] truncate font-medium'>
+            {row.getValue('title')}
+          </span>
+        </div>
+      )
     },
     {
       accessorKey: 'project',

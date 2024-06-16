@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import type { Task } from '@prisma/client';
-import type { Table } from '@tanstack/react-table';
+import { type Task } from '@prisma/client';
+import { type Table } from '@tanstack/react-table';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Button } from '@/components/ui/button';
+import { DeleteTasksDialog } from '@/components/protected/tasks/table/delete-tasks-dialog';
 
 type TaskWithProject = Task & {
   project: string;
@@ -39,6 +40,12 @@ export function TasksTableToolbarActions({
               Delete ({table.getFilteredSelectedRowModel().rows.length})
             </span>
           </Button>
+          <DeleteTasksDialog
+            isOpen={isDeleteOpen}
+            onClose={() => setIsDeleteOpen(false)}
+            tasks={table.getFilteredSelectedRowModel().rows}
+            onSuccess={() => table.toggleAllPageRowsSelected(false)}
+          />
         </>
       ) : null}
       <>
